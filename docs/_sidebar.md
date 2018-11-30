@@ -1,5 +1,2 @@
-* [/](/)
-* [2.md](2.md)
-* [3.md](3.md)
-* [f1/2.md](f1/2.md)
-
+* [HOME](/)
+* [Docsify-MD扩展](mdhelper.md)
