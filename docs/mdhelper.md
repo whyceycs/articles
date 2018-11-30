@@ -109,7 +109,7 @@ docsify 扩展了一些 Markdown 语法，可以让文档更易读。
 
 ```markdown
 <details>
-<summary>Self-assessment (Click to expand)</summary>
+<summary>Self-assessment (Click to expand)</summary> 
 
 - Abc
 - Abc
