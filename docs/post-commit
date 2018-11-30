@@ -1,0 +1,31 @@
+#!/bin/sh
+
+tempPath=$(cd `dirname $0`; pwd)
+
+
+
+result=$(/usr/local/bin/node $tempPath/../../check.js)
+
+if [ "$result" = "done" ]; then
+echo "done"
+else
+   /usr/bin/osascript << EOF
+
+set MyApplVar to do shell script "echo '$result'"
+
+tell application "Finder"
+
+activate
+
+set result to display dialog MyApplVar buttons {"OK"} default button "OK"
+
+end tell
+
+EOF
+echo "备忘"
+echo $result
+
+fi;
+
+
+
