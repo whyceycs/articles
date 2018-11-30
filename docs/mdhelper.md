@@ -1,6 +1,6 @@
 # Doc helper
 
-docsify extends Markdown syntax to make your documents more readable.
+Docsify extends Markdown syntax to make your documents more readable.
 
 ## important content
 
