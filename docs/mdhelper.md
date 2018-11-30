@@ -59,6 +59,9 @@ docsify 扩展了一些 Markdown 语法，可以让文档更易读。
 [link](/demo ':disabled')
 ```
 
+[link](/demo ':disabled')
+
+
 ## Github 任务列表
 
 ```md
