@@ -21,5 +21,10 @@ Github Pages根目录是/docs文件夹时，浏览器会提示https://xxxx.githu
 
 并把favicon.ico文件放入/docs文件夹中
 
+## Github Permission denied (publickey)问题
 
 
+
+先上解决方案:[https://segmentfault.com/q/1010000000835302](https://segmentfault.com/q/1010000000835302)
+
+!> ssh-add -K ~/.ssh/whyceycs-GitHub
