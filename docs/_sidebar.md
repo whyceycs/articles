@@ -2,6 +2,7 @@
 * [技术栈](boilerplate/)
   * [前端](boilerplate/frontend/)
   	* [CSS](boilerplate/frontend/css/)
+        * [The 7-1 Pattern](boilerplate/frontend/css/71pattern.md) 
   		* [fswatch](boilerplate/frontend/css/fswatch.md) 
   * [后端](boilerplate/backend/)
 * [第三方框架](otherapp/)
