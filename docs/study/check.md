@@ -11,4 +11,5 @@ check:
 - [ ] table-layout属性
 - [ ] documentfragment
 - [ ]  transform:translateZ(0)  will-change:transform css属性
+- [ ] 页面渲染流程，生成各种树
 
