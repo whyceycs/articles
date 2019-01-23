@@ -11,6 +11,8 @@
 - IE内核：Trident
   - 由于长期垄断，导致长期未更新，导致与W3C标准脱节(2005)
   - JS引擎为Chakra（forJScript）
+- EdgeHTML 内核
+  - Window10 发布后，IE 将其内置浏览器命名为 **Edge**，Edge 最显著的特点就是新内核 EdgeHTML。
 - Safari：Webkit
   - 包含WebCore排版引擎和JavascriptCore解析引擎，从KHTML引擎与KJS引擎衍生出来。<span style='color:red'>Google Chrome</span>使用了Webkit内核，但是脚本解析使用了自家的V8
   - KHTML为网页排版引擎之一，由KDE开发
@@ -23,6 +25,7 @@
   - 代码公开，可开发程度高。跨平台引擎
   - JS引擎为SpiderMonkey
 - Opera：Presto ---> Blink
+
   - 商用Presto内核，后转为Blink内核
 - 双核浏览器：
   - 360浏览器、猎豹浏览器内核：IE+Chrome双内核
@@ -313,7 +316,7 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 
     将以下代码加入Global CSS 中,给需要闭合的div加上class=”clearfix”即可。
 
-    ```
+    ```css
     /* Clear Fix */ 
     .clearfix:after { content:"."; display:block; height:0; clear:both;visibility:hidden; } 
     .clearfix { display:inline-block; } 
@@ -323,6 +326,13 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
     /* end of clearfix */
     ```
 
+	```css
+	.clearfix{overflow:auto;_height:1%}
+	```
+	
+	```css
+	.clearfix{overflow: auto;zoom: 1;}
+	```
 12. **表单元素行高不一致**
 
     给表单元素添加float：left（左浮动）；或者是vertical-align：middle；（垂直对齐方式：居中）
@@ -530,3 +540,64 @@ visibility：hidden指的是元素不可见但存在，保留空间，不影响�
 
 </details>
 
+<details>
+<summary>11.从url到页面展现，这之中发生了什么？</summary> 
+输入url
+
+客户端检查本地是否有对应的IP地址
+
+找到则返回响应的IP地址,若没找到则请求上级DNS服务器，直至找到或到根节点
+
+发送HTTP请求
+
+TCP传输报文
+
+网络层IP协议查询MAC地址
+
+找到对方的MAC地址后，就将数据发送到数据链路层传输
+
+服务器在链路层接收到数据包，再层层向上直到应用层
+
+服务器响应请求
+
+服务器返回相应文件
+
+页面的渲染阶段:
+
+构建DOM树 
+
+构建渲染树
+
+布局渲染树
+
+绘制渲染树
+
+</details>
+
+<details>
+<summary>12.什么是无头浏览器，它的作用是什么？</summary> 
+
+无头浏览器（headless browser），是一种没有界面的浏览器。既然是浏览器那么浏览器该有的东西它都应该有，只是看不到界面而已。我们日常使用浏览器的步骤为：启动浏览器、打开一个网页、进行交互。而无头浏览器指的是我们使用脚本来执行以上过程的浏览器，能模拟真实的浏览器使用场景。
+
+有了无头浏览器，我们就能做包括但不限于以下事情：
+
+- 对网页进行截图保存为图片或 pdf
+- 抓取单页应用(SPA)执行并渲染(解决传统 HTTP 爬虫抓取单页应用难以处理异步请求的问题)
+- 做表单的自动提交、UI的自动化测试、模拟键盘输入等
+- 用浏览器自带的一些调试工具和性能分析工具帮助我们分析问题
+- 在最新的无头浏览器环境里做测试、使用最新浏览器特性
+- 写爬虫做你想做的事情~
+
+
+
+**PhantomJS, 基于 Webkit**
+
+**SlimerJS, 基于 Gecko**
+
+**HtmlUnit, 基于 Rhnio**
+
+**TrifleJS, 基于 Trident**
+
+**Splash, 基于 Webkit**
+
+</details>
