@@ -253,7 +253,7 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 </details>
 
 <details>
-<summary> 2. 块属性标签float后，又有横行的margin情况下，在ie6显示margin比设置的大 </summary> 
+<summary>2. 块属性标签float后，又有横行的margin情况下，在ie6显示margin比设置的大 </summary> 
 
    - 问题症状:常见症状是ie6中后面的一块被顶到下一行
    - 碰到频率：90%（稍微复杂点的页面都会碰到，float布局最常见的浏览器兼容问题）
