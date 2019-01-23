@@ -36,5 +36,9 @@ check:
 
   　　4. children
 
-  　　5. outline
+    　　5. outline
+
+- [ ] WebSocket sharedworker
+
+- [ ] WebSocket
 

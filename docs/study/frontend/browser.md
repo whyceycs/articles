@@ -10,18 +10,33 @@
 
 - IE内核：Trident
   - 由于长期垄断，导致长期未更新，导致与W3C标准脱节(2005)
+  - JS引擎为Chakra（forJScript）
 - Safari：Webkit
   - 包含WebCore排版引擎和JavascriptCore解析引擎，从KHTML引擎与KJS引擎衍生出来。<span style='color:red'>Google Chrome</span>使用了Webkit内核，但是脚本解析使用了自家的V8
   - KHTML为网页排版引擎之一，由KDE开发
+  - JS引擎为JavascriptCore
 - Chrome：Blink
   - 是由Google和Opera开发的浏览器排版引擎，于2013年4月公布了这一消息。该渲染引擎是开源引擎Webkit中Webcore组件的一个分支，并且在<span style='color:red'>Chrome</span>（28及往后版本）、<span style='color:red'>Opera</span>（15及往后版本）和Yandex浏览器中使用
   - Chrome为每个Tab分配了各自的渲染引擎实例，每个Tab就是一个独立的进程。
+  - JS引擎为V8
 - Firefox：Gecko
   - 代码公开，可开发程度高。跨平台引擎
+  - JS引擎为SpiderMonkey
 - Opera：Presto ---> Blink
   - 商用Presto内核，后转为Blink内核
+- 双核浏览器：
+  - 360浏览器、猎豹浏览器内核：IE+Chrome双内核
+  - 搜狗、遨游、QQ浏览器内核：Trident（兼容模式）+Webkit（高速模式）
 
-- 双核浏览器：遨游浏览器，360安全浏览器：一个为IE的**Trident**，另一个常为**Webkit**。
+
+
+### 移动端的浏览器内核
+
+移动端的浏览器内核主要说的是系统内置浏览器的内核，目前移动设备浏览器上常用的内核有 Webkit，Blink，Trident，Gecko。
+
+- iPhone 和 iPad 等苹果 iOS 平台主要是 WebKit
+- Android 4.4 之前的 Android 系统浏览器内核是 WebKit，Android 4.4 系统浏览器切换到了Chromium，内核是 Webkit 的分支 Blink。
+- Windows Phone 8 系统浏览器内核是 Trident
 
 
 
@@ -218,6 +233,112 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 
 
 
+## 浏览器兼容性问题
+
+参考：[https://blog.csdn.net/xustart7720/article/details/73604651](https://blog.csdn.net/xustart7720/article/details/73604651)
+
+指因为不同的浏览器对同一段代码有不同的解析，造成页面显示效果不统一的情况。在大多数情况下，我们的需求是，无论用户用什么浏览器来查看我们的网站或者登陆我们的系统，都应该是统一的显示效果。
+
+
+
+1. **不同浏览器的标签默认的外补丁margin和内补丁padding不同**
+
+   - 问题症状：随便写几个标签，不加样式控制的情况下，各自的margin 和padding差异较大。
+   - 碰到频率:100%
+   - 解决方案：css里 `*{margin:0;padding:0;}`
+   - 备注：这个是最常见的也是最易解决的一个浏览器兼容性问题，几乎所有的css文件开头都会用通配符*来设置各个标签的内外补丁是0。
+
+2. **块属性标签float后，又有横行的margin情况下，在ie6显示margin比设置的大**
+
+   - 问题症状:常见症状是ie6中后面的一块被顶到下一行
+   - 碰到频率：90%（稍微复杂点的页面都会碰到，float布局最常见的浏览器兼容问题）
+   - 解决方案：在float的标签样式控制中加入 display:inline;将其转化为行内属性
+   - 备注：我们最常用的就是div+css布局了，而div就是一个典型的块属性标签，横向布局的时候我们通常都是用div float实现的，横向的间距设置如果用margin实现，这就是一个必然会碰到的兼容性问题。
+
+3. **设置较小高度标签（一般小于10px），在ie6，ie7，遨游中高度超出自己设置高度**
+
+   - 问题症状：ie6、7和遨游里这个标签的高度不受控制，超出自己设置的高度
+   - 碰到频率：60%
+   - 解决方案：给超出高度的标签设置overflow:hidden;或者设置行高line-height 小于你设置的高度。
+   - 备注：这种情况一般出现在我们设置小圆角背景的标签里。出现这个问题的原因是ie8之前的浏览器都会给标签一个最小默认的行高的高度。即使你的标签是空的，这个标签的高度还是会达到默认的行高。
+
+4. **行内属性标签，设置display:block后采用float布局，又有横行的margin的情况，ie6间距bug（类似第二种）**
+
+   - 问题症状：ie6里的间距比超过设置的间距
+   - 碰到几率：20%
+   - 解决方案：在display:block;后面加入display:inline;display:table;
+   - 备注：行内属性标签，为了设置宽高，我们需要设置display:block;(除了input标签比较特殊)。在用float布局并有横向的margin后，在ie6下，他就具有了块属性float后的横向margin的bug。不过因为它本身就是行内属性标签，所以我们再加上display:inline的话，它的高宽就不可设了。这时候我们还需要在display:inline后面加入display:talbe。
+
+5. **图片默认有间距**
+
+   - 问题症状：几个img标签放在一起的时候，有些浏览器会有默认的间距，加上问题一中提到的通配符也不起作用。
+   - 碰到几率：20%
+   - 解决方案：使用float属性为img布局,
+   - 备注：因为img标签是行内属性标签，所以只要不超出容器宽度，img标签都会排在一行里，但是部分浏览器的img标签之间会有个间距。去掉这个间距使用float是正道
+
+6. **标签最低高度设置min-height不兼容**
+
+   - 问题症状：因为min-height本身就是一个不兼容的css属性，所以设置min-height时不能很好的被各个浏览器兼容
+   - 碰到几率：5%
+   - 解决方案：如果我们要设置一个标签的最小高度200px，需要进行的设置为：`{min-height:200px; height:auto !important; height:200px; overflow:visible;}`
+   - 备注：在B/S系统前端开时，有很多情况下我们有这种需求。当内容小于一个值（如300px）时。容器的高度为300px；当内容高度大于这个值时，容器高度被撑高，而不是出现滚动条。这时候我们就会面临这个兼容性问题。
+
+7. **透明度的兼容css设置**
+
+   ```css
+   .transparent_class {  
+       background: rgba(255, 0, 0, 0.3) !important; /* IE无效，FF有效 */    
+       filter: alpha(opacity=80);    
+       -moz-opacity:0.8;    
+       -khtml-opacity: 0.3;    
+       opacity: 0.8;    
+   }  
+   ```
+
+   
+
+8. **光标手形**
+
+   firefox不支持hand，但ie支持pointer，统一使用cursor:pointer;
+
+9. **当在a标签中嵌套img标签时，在某些浏览器中img会有蓝色边框**
+
+   给img添加border：0；或者是border：none；
+
+10. **div里的内容，IE默认为居中，而FF默认为左对齐**
+
+  可以尝试增加代码margin: 0 auto;
+
+11. **万能float 闭合(非常重要!)**
+
+    将以下代码加入Global CSS 中,给需要闭合的div加上class=”clearfix”即可。
+
+    ```
+    /* Clear Fix */ 
+    .clearfix:after { content:"."; display:block; height:0; clear:both;visibility:hidden; } 
+    .clearfix { display:inline-block; } 
+    /* Hide from IE Mac */ 
+    .clearfix {display:block;} 
+    /* End hide from IE Mac */ 
+    /* end of clearfix */
+    ```
+
+12. **表单元素行高不一致**
+
+    给表单元素添加float：left（左浮动）；或者是vertical-align：middle；（垂直对齐方式：居中）
+
+13. **上下margin的重叠问题**
+
+    - 问题症状：给上边元素设置了margin-bottom，给下边元素设置了margin-top，浏览器只会识别较大值；
+
+    - 解决方案：margin-top和margin-bottom中选择一个，只设置其中一个值；
+
+14. **body 对象**
+
+    - 问题症状：FF的 body 在 body 标签没有被浏览器完全读入之前就存在，而IE则必须在 body 完全被读入之后才存在。这会产生在IE下，文档没有载入完时，在body上appendChild会出现空白页面的问题
+    - 解决方法：一切在body上插入节点的动作，全部在onload后进行
+
+
 
 
 ## 面试相关
@@ -283,7 +404,129 @@ visibility：hidden指的是元素不可见但存在，保留空间，不影响�
 
 </details>
 
+<details>
+<summary>6.如何实现浏览器内多个标签页之间的通信</summary> 
+**localstorage**:
+
+- localstorage是浏览器多个标签共用的存储空间，所以可以用来实现多标签之间的通信(ps：session是会话级的存储空间，每个标签页都是单独的）。
+
+-  localstorage 在另一个浏览上下文里被添加、修改或删除时，它都会触发一个事件，我们通过直接在window对象上添加监听事件，控制它的值来进行页面信息通信。
+
+  ```javascript
+    window.onstorage = (e) => {console.log(e)}
+    // 或者这样
+    window.addEventListener('storage', (e) => console.log(e))
+    
+    onstorage以及storage事件，针对都是非当前页面对localStorage进行修改时才会触发，当前页面修改localStorage不会触发监听函数。然后就是在对原有的数据的值进行修改时才会触发，比如原本已经有一个key为a值为b的localStorage，你再执行：localStorage.setItem('a', 'b')代码，同样是不会触发监听函数的。
+  ```
+- 注意：Safari 在无痕模式下设置 localstorage 值时会抛出QuotaExceededError 的异常
+
+**WebSocket服务器中转**：
+
+- 需要页面都与服务器建立 WebSockets 连接
+- 支持跨域
+
+**cookie**:
+
+使用cookie+setInterval，将要传递的信息存储在cookie中，每隔一定时间读取cookie信息，即可随时获取要传递的信息
+
+```javascript
+<input id="name">  
+<input type="button" id="btn" value="提交">  
+<script type="text/javascript">  
+    $(function(){    
+        $("#btn").click(function(){    
+            var name=$("#name").val();    
+            document.cookie="name="+name;    
+        });    
+    });    
+</script>  
+标签页2：
+
+<script type="text/javascript">  
+    $(function(){   
+        function getCookie(key) {    
+            return JSON.parse("{\"" + document.cookie.replace(/;\s+/gim,"\",\"").replace(/=/gim, "\":\"") + "\"}")[key];    
+        }     
+        setInterval(function(){    
+            console.log("name=" + getCookie("name"));    
+        }, 10000);    
+    });  
+</script>  
+
+```
+
+**SharedWorker**:
+
+- html5浏览器的新特性
+- 普通的webworker直接使用new Worker()即可创建，是**当前页面**专有的。
+- 共享worker(SharedWorker)，是可以多个标签页、iframe共同使用的。
+- 必须保证这些标签页都是同源的(相同的协议，主机和端口号)
+
+**window.postMessage()** ：
+
+- 支持两个页面跨域
+- 只能传递字符串数据（旧版本）
+
+</details>
+
+<details>
+<summary>7.webSocket如何兼容低浏览器</summary> 
+
+- Adobe Flash Socket ActiveX HTMLFile (IE) 基于 multipart 编码发送 XHR 基于长轮询的 XHR
+- 引用WebSocket.js这个文件来兼容低版本浏览器
+
+</details>
+
+<details>
+<summary>8.页面可见性（Page Visibility）API 可以有哪些用途？</summary> 
+
+- 通过visibility state的值得检测页面当前是否可见，以及打开网页的时间。
+
+- 在页面被切换到其他后台进程时，自动暂停音乐或视频的播放。
+
+- 备注：
 
 
+  - Visibilitychange事件监听
 
+  - html5新api，之前可以用下列模拟
+
+
+    - ```javascript
+      // 当前窗口得到焦点
+      window.onfocus = function() {
+        // 动画
+        // ajax 轮询等等
+      };
+      
+      // 当前窗口失去焦点
+      window.onblur = function() {
+        // 停止动画
+        // 停止 ajax 轮询等等
+      };
+      ```
+</details>
+
+<details>
+<summary>9.无样式内容闪烁（FOUC）Flash of Unstyle Content</summary> 
+
+@import导入CSS文件会等到文档加载完后再加载CSS样式表。因此，在页面DOM加载完成到CSS导入完成之间会有一段时间页面上的内容是没有样式的。
+
+解决方法：使用link标签加载CSS样式文件。因为link是顺序加载的，这样页面会等到CSS下载完之后再下载HTML文件，这样先布局好，就不会出现FOUC问题。
+
+</details>
+
+<details>
+<summary>10.为什么会有双核浏览器？</summary> 
+
+因为有些像网银和公司校园这类网站用Chrome浏览器打不开或会出问题，但却可以用IE浏览器打开。但是对于常见的网站用 IE 浏览器搞不好就会卡死。我们称之为“网站存在兼容性问题”。
+
+鉴于国内的环境，网银和IE内核的关系将长期存在，但是又忍不住webkit的诱惑，所以，才有了双核, 其中一个内核是Trident，然后再增加一个其他内核。国内的厂商一般把其他内核叫做“高速浏览模式”，而Trident则是“兼容浏览模式”，用户可以来回切换。
+
+- 360浏览器、猎豹浏览器内核：IE+Chrome双内核；
+- 搜狗、遨游、QQ浏览器内核：Trident（兼容模式）+Webkit（高速模式）
+
+
+</details>
 
