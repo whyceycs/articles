@@ -416,6 +416,7 @@ visibility：hidden指的是元素不可见但存在，保留空间，不影响�
 
 <details>
 <summary>6.如何实现浏览器内多个标签页之间的通信</summary> 
+
 **localstorage**:
 
 - localstorage是浏览器多个标签共用的存储空间，所以可以用来实现多标签之间的通信(ps：session是会话级的存储空间，每个标签页都是单独的）。
@@ -491,11 +492,11 @@ visibility：hidden指的是元素不可见但存在，保留空间，不影响�
 <details>
 <summary>8.页面可见性（Page Visibility）API 可以有哪些用途？</summary> 
 
-- 通过visibility state的值得检测页面当前是否可见，以及打开网页的时间。
+- 通过visibility state的值来检测页面当前是否可见，以及打开网页的时间。
 
 - 在页面被切换到其他后台进程时，自动暂停音乐或视频的播放。
 
-- 备注：
+  备注：
 
 
   - Visibilitychange事件监听
