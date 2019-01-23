@@ -36,14 +36,18 @@
 通过网络(通常以8k分块的方式)获得请求文档的内容。之后：
 
 1. 解析html构建dom树  [<span style='color:red'>Parsing HTML to construct the DOM tree</span>]
-
-   深度遍历的过程：当前节点的所有子节点都构建好后才会去构建当前节点的下一个兄弟节点。
-
+   1. 渲染引擎解析html文档，转换树中标签到dom节点，内容树。
+   2. 本过程包含发起http请求获取链接的内容，如css样式文件。
+   3. 深度遍历的过程：当前节点的所有子节点都构建好后才会去构建当前节点的下一个兄弟节点。
 2. 构建render树  [<span style='color:red'>Render tree construction</span>]
+   1. 解析CSS，包括外部CSS文件和style中的样式元素。
+   2. 根据CSS选择器计算出节点样式，创建渲染树。
+   3. 由一些包含颜色，大小等信息的<span style='color:red'>矩形</span>组成。
 
 !> display:none的节点不加入render树,而visibility:hidden,opacity:0的节点会。所以如果某个节点最开始不显示，设为display:none更优
 
 3. 布局render树  [<span style='color:red'>Layout of the render tree</span>]
+   1. 从根节点递归调用，计算每个元素大小，位置等，给出每个节点在屏幕上的精确坐标。
 4. 绘制render树   [<span style='color:red'>Painting the render tree</span>]
 
 !> 上述过程时逐步完成的，为了更好的用户体验，渲染引擎将会尽可能早的将内容呈现到屏幕上，并不会等到所有html都解析完成之后再去构建和布局render树。它是解析完一部分内容就显示一部分内容，同时可能还在通过下载其余内容。
@@ -84,6 +88,7 @@ JS引擎：解析和执行javascript来实现网页的动态效果。
 
 <details>
 <summary>2.常见的浏览器内核有哪些</summary> 
+
 Trident：IE内核
 
 Webkit：Safari内核
@@ -95,6 +100,21 @@ Gecko：Firefox内核
 Presto：前Opera内核
 
 </details>
+
+<details>
+<summary>3.DOMContentLoaded与onload的区别</summary> 
+
+- DOMContentLoaded:
+
+  当文档中没有脚本时，浏览器解析完文档便能触发 DOMContentLoaded 事件；如果文档中包含脚本，则脚本会阻塞文档的解析，而脚本需要等位于脚本前面的css加载完才能执行。在任何情况下，DOMContentLoaded 的触发<span style='color:red'>不需要</span>等待图片等其他资源加载完成
+
+- onload:
+
+  页面上所有的资源（图片，音频，视频等）被加载以后才会触发load事件，简单来说，页面的load事件会在DOMContentLoaded被触发之后才触发
+
+</details>
+
+
 
 
 
