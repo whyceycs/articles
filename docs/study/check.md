@@ -12,4 +12,5 @@ check:
 - [ ] documentfragment
 - [ ]  transform:translateZ(0)  will-change:transform css属性
 - [ ] 页面渲染流程，生成各种树
+- [ ] css选择器，从右到左，优化，class。。。
 
