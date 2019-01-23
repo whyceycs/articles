@@ -10,6 +10,8 @@ check:
 
 - [ ] manifest
 
+- [ ] iframe
+
 - [ ] html内容加载顺序。
 
 - [ ] ```

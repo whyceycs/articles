@@ -326,13 +326,14 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
     /* end of clearfix */
     ```
 
-	```css
-	.clearfix{overflow:auto;_height:1%}
-	```
-	
-	```css
-	.clearfix{overflow: auto;zoom: 1;}
-	```
+    ```css
+    .clearfix{overflow:auto;_height:1%}
+    ```
+
+    ```css
+    .clearfix{overflow: auto;zoom: 1;}
+    ```
+
 12. **表单元素行高不一致**
 
     给表单元素添加float：left（左浮动）；或者是vertical-align：middle；（垂直对齐方式：居中）
@@ -347,6 +348,16 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 
     - 问题症状：FF的 body 在 body 标签没有被浏览器完全读入之前就存在，而IE则必须在 body 完全被读入之后才存在。这会产生在IE下，文档没有载入完时，在body上appendChild会出现空白页面的问题
     - 解决方法：一切在body上插入节点的动作，全部在onload后进行
+
+15. **click在ios上有300ms延迟，原因及如何解决？**
+
+    - 粗暴型，禁用缩放
+
+	```html
+       <meta name="viewport" content="width=device-width, user-scalable=no"> 
+    ```
+
+    - 利用FastClick，其原理是：检测到touchend事件后，立刻出发模拟click事件，并且把浏览器300毫秒之后真正出发的事件给阻断掉
 
 
 
@@ -484,7 +495,10 @@ visibility：hidden指的是元素不可见但存在，保留空间，不影响�
 <details>
 <summary>7.webSocket如何兼容低浏览器</summary> 
 
-- Adobe Flash Socket ActiveX HTMLFile (IE) 基于 multipart 编码发送 XHR 基于长轮询的 XHR
+- Adobe Flash Socket 
+- ActiveX HTMLFile (IE) 
+- 基于 multipart 编码发送 XHR 
+- 基于长轮询的 XHR
 - 引用WebSocket.js这个文件来兼容低版本浏览器
 
 </details>
