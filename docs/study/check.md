@@ -10,3 +10,5 @@ check:
 - [ ] position属性,脱离文档，dom树等等
 - [ ] table-layout属性
 - [ ] documentfragment
+- [ ]  transform:translateZ(0)  will-change:transform css属性
+
