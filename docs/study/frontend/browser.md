@@ -75,10 +75,27 @@ repaint：重绘。改变某个元素的背景色，颜色等不影响内外部�
 
 主要分成两部分：渲染引擎(Layout Engine或Rendering Engine)和JS引擎。
 
-渲染引擎：负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入CSS等），以及计算网页的显示方式，然后会输出至显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。
+渲染引擎：负责取得网页的内容（HTML、XML、css、图像等等）、整理讯息（例如加入CSS等），以及计算网页的显示方式，然后会输出至显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。
 JS引擎：解析和执行javascript来实现网页的动态效果。
 
 最开始渲染引擎和JS引擎并没有区分的很明确，后来JS引擎越来越独立，内核就倾向于只指渲染引擎。
 
 </details>
+
+<details>
+<summary>2.常见的浏览器内核有哪些</summary> 
+Trident：IE内核
+
+Webkit：Safari内核
+
+Blink：Chrome内核，Opera内核
+
+Gecko：Firefox内核
+
+Presto：前Opera内核
+
+</details>
+
+
+
 
