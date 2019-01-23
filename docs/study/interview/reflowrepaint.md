@@ -15,6 +15,12 @@
 - 计算offsetWidth和offsetHeight
 - 设置style属性
 
+#### 重绘repaint
+
+如果只是改变某个元素的背景色，文字颜色，边框颜色等不影响周围及内部布局的属性，将只会引起重绘，而不会回流。重绘速度明显快于回流。
+
+
+
 #### 回流优化：
 
 1.尽量减少不必要的reflow。例如img实现给定高和宽。
@@ -26,13 +32,12 @@
 3.尽量通过class来设计元素样式,切忌用style. 最好把需要操作的样式，提前写成class，之后需要修改。只需要修改一次，需要修改的时候，直接修改className，做成一次性更新多条css DOM属性，一次回流重绘总比多次回流重绘要付出的成本低得多；（谷歌浏览器有这个缓冲 flush 机制，如果在某个周内进行多次操作的话，会缓冲一次修改。）例如:
 ```javascript
 var bstyle = document.body.style; // cache
-bstyle.padding = "20px"; // 回流 reflow, repaint
-bstyle.border = "10px solid red"; //  再一次的回流 reflow 和 repaint
-bstyle.color = "blue"; //回流 repaint
-bstyle.backgroundColor = "#fad"; //回流 repaint
-bstyle.fontSize = "2em"; //回流 reflow, repaint
-// new DOM element - reflow, repaint
-document.body.appendChild(document.createTextNode('dude!'));
+bstyle.padding = "20px"; // 回流重绘 reflow, repaint
+bstyle.border = "10px solid red"; //  回流重绘 reflow 和 repaint
+bstyle.color = "blue"; //重绘 repaint
+bstyle.backgroundColor = "#fad"; //重绘 repaint
+bstyle.fontSize = "2em"; //回流重绘 reflow, repaint
+document.body.appendChild(document.createTextNode('dude!'));// 回流重绘reflow, repaint
 对上面代码优化：
 .b-class{
 　　padding:20px;
@@ -44,7 +49,7 @@ document.body.appendChild(document.createTextNode('dude!'));
 $div.addClass("b-class");
 ```
 
-4.实现元素的动画，对于进场要回流的组件，要抽离出来，position属性要设为fixed或者absolute。
+4.实现元素的动画，对于经常要回流的组件，要抽离出来，position属性要设为fixed或者absolute。
 
 把需要频繁回流重绘的单独抽出去一个图层，使用 transform:translateZ(0) 或 will-change:transform 的Css属性都能实现;
 
@@ -96,19 +101,42 @@ for(i=0;i<10;i++){
 }
 ```
 
-12.如果需要频繁的用js操作dom节点，可以使用documentfragment，这是一个纯增加性能的地方。
+12.如果需要频繁的用js操作dom节点，可以使用**documentfragment**，这是一个纯增加性能的地方。
 
 13.css属性用法上，用translate代替top。因为top会触发回流，但是translate不会。所以translate会比top节省一个layout的时间。
-
-#### 重绘repaint
-
-如果只是改变某个元素的背景色，文字颜色，边框颜色等不影响周围及内部布局的属性，将只会引起重绘，而不会回流。重绘速度明显快于回流。
-
-
 
 #### 重绘优化
 
 1.css属性用法上，用opacity代替visiability。visiability会触发重绘，但是opacity不会。该用法只针对于独立图层上。
+
+
+
+#### 重绘回流优化方案总结
+
+1.避免使用出发重绘回流的css属性。
+
+2.尽量减少js操作修改DOM的css次数
+
+3.将平凡重绘回流的DOM元素单独作为一个独立图层，那么这个dom元素的重绘回流影响智慧在这个图层。页面不能有过多图层(第3，4点)。
+
+
+
+#### 延伸
+
+##### 浏览器 flush 队列机制
+
+```text
+回流重绘的花销不小，如果每句JS操作都去回流重绘的话，浏览器可能就会受不了。所以很多浏览器都会优化这些操作，浏览器会维护1个队列，把所有会引起回流、重绘的操作放入这个队列，等队列中的操作到了一定的数量或者到了一定的时间间隔，浏览器就会flush队列，进行一个批处理。这样就会让多次的回流、重绘变成一次回流重绘。
+虽然有了浏览器的优化，但有时候一些代码可能会强制浏览器提前flush队列，这样浏览器的优化可能就起不到作用了。当你请求向浏览器请求一些style信息的时候，就会让浏览器flush队列，比如：
+1. offsetTop, offsetLeft, offsetWidth, offsetHeight
+2. scrollTop/Left/Width/Height
+3. clientTop/Left/Width/Height
+4. width,height
+5. 请求了getComputedStyle(), 或者 IE的 currentStyle     // 这个属性表示经过计算过最终的样式
+当请求上面的一些属性的时候，浏览器为了给你最精确的值，需要flush队列，因为队列中可能会有影响到这些值的操作。即使你获取元素的布局和样式信息跟最近发生或改变的布局信息无关，浏览器都会强行刷新渲染队列。
+```
+
+
 
 
 
