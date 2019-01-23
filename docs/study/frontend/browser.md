@@ -35,9 +35,13 @@
 通过网络(通常以8k分块的方式)获得请求文档的内容。之后：
 
 1. 解析html构建dom树  [<span style='color:red'>Parsing HTML to construct the DOM tree</span>]
+
 2. 构建render树  [<span style='color:red'>Render tree construction</span>]
+
 !> display:none的节点不加入render树,而visibility:hidden的节点会。所以如果某个节点最开始不显示，设为display:none更优
+
 3. 布局render树  [<span style='color:red'>Layout of the render tree</span>]
+
 4. 绘制render树   [<span style='color:red'>Painting the render tree</span>]
 
 ### 相关名词：
