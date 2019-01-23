@@ -4,6 +4,8 @@ check:
 
 - [ ] v8相关内容
 
+- [ ] XMLHttpRequest
+
 - [ ] http
 
 - [ ] 回流，回流优化
