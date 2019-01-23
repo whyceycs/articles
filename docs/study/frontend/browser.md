@@ -620,7 +620,12 @@ visibility：hidden指的是元素不可见但存在，保留空间，不影响�
 
    localStorage是Web Storage互联网存储规范中的一部分，大部分浏览器都能支持。
 
+</details>
 
+<details>
+<summary>15.浏览器兼容性问题</summary> 
+
+参见上一节
 
 
 </details>
