@@ -242,51 +242,67 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 
 指因为不同的浏览器对同一段代码有不同的解析，造成页面显示效果不统一的情况。在大多数情况下，我们的需求是，无论用户用什么浏览器来查看我们的网站或者登陆我们的系统，都应该是统一的显示效果。
 
-
-
-1. **不同浏览器的标签默认的外补丁margin和内补丁padding不同**
+<details>
+<summary>1. **不同浏览器的标签默认的外补丁margin和内补丁padding不同**</summary> 
 
    - 问题症状：随便写几个标签，不加样式控制的情况下，各自的margin 和padding差异较大。
    - 碰到频率:100%
    - 解决方案：css里 `*{margin:0;padding:0;}`
    - 备注：这个是最常见的也是最易解决的一个浏览器兼容性问题，几乎所有的css文件开头都会用通配符*来设置各个标签的内外补丁是0。
 
-2. **块属性标签float后，又有横行的margin情况下，在ie6显示margin比设置的大**
+</details>
+
+<details>
+<summary>2. **块属性标签float后，又有横行的margin情况下，在ie6显示margin比设置的大**</summary> 
 
    - 问题症状:常见症状是ie6中后面的一块被顶到下一行
    - 碰到频率：90%（稍微复杂点的页面都会碰到，float布局最常见的浏览器兼容问题）
    - 解决方案：在float的标签样式控制中加入 display:inline;将其转化为行内属性
    - 备注：我们最常用的就是div+css布局了，而div就是一个典型的块属性标签，横向布局的时候我们通常都是用div float实现的，横向的间距设置如果用margin实现，这就是一个必然会碰到的兼容性问题。
 
-3. **设置较小高度标签（一般小于10px），在ie6，ie7，遨游中高度超出自己设置高度**
+</details>
+
+<details>
+<summary>3. **设置较小高度标签（一般小于10px），在ie6，ie7，遨游中高度超出自己设置高度**</summary> 
 
    - 问题症状：ie6、7和遨游里这个标签的高度不受控制，超出自己设置的高度
    - 碰到频率：60%
    - 解决方案：给超出高度的标签设置overflow:hidden;或者设置行高line-height 小于你设置的高度。
    - 备注：这种情况一般出现在我们设置小圆角背景的标签里。出现这个问题的原因是ie8之前的浏览器都会给标签一个最小默认的行高的高度。即使你的标签是空的，这个标签的高度还是会达到默认的行高。
 
-4. **行内属性标签，设置display:block后采用float布局，又有横行的margin的情况，ie6间距bug（类似第二种）**
+</details>
+
+<details>
+<summary>4. **行内属性标签，设置display:block后采用float布局，又有横行的margin的情况，ie6间距bug（类似第二种）**</summary> 
 
    - 问题症状：ie6里的间距比超过设置的间距
    - 碰到几率：20%
    - 解决方案：在display:block;后面加入display:inline;display:table;
    - 备注：行内属性标签，为了设置宽高，我们需要设置display:block;(除了input标签比较特殊)。在用float布局并有横向的margin后，在ie6下，他就具有了块属性float后的横向margin的bug。不过因为它本身就是行内属性标签，所以我们再加上display:inline的话，它的高宽就不可设了。这时候我们还需要在display:inline后面加入display:talbe。
 
-5. **图片默认有间距**
+</details>
+
+<details>
 
    - 问题症状：几个img标签放在一起的时候，有些浏览器会有默认的间距，加上问题一中提到的通配符也不起作用。
    - 碰到几率：20%
    - 解决方案：使用float属性为img布局,
    - 备注：因为img标签是行内属性标签，所以只要不超出容器宽度，img标签都会排在一行里，但是部分浏览器的img标签之间会有个间距。去掉这个间距使用float是正道
 
-6. **标签最低高度设置min-height不兼容**
+</details>
+
+<details>
+<summary>6. **标签最低高度设置min-height不兼容**</summary> 
 
    - 问题症状：因为min-height本身就是一个不兼容的css属性，所以设置min-height时不能很好的被各个浏览器兼容
    - 碰到几率：5%
    - 解决方案：如果我们要设置一个标签的最小高度200px，需要进行的设置为：`{min-height:200px; height:auto !important; height:200px; overflow:visible;}`
    - 备注：在B/S系统前端开时，有很多情况下我们有这种需求。当内容小于一个值（如300px）时。容器的高度为300px；当内容高度大于这个值时，容器高度被撑高，而不是出现滚动条。这时候我们就会面临这个兼容性问题。
 
-7. **透明度的兼容css设置**
+</details>
+
+<details>
+<summary>7. **透明度的兼容css设置**</summary> 
 
    ```css
    .transparent_class {  
@@ -298,58 +314,68 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
    }  
    ```
 
-   
+</details>
 
-8. **光标手形**
+<details>
+<summary>8. **光标手形**</summary> 
 
    firefox不支持hand，但ie支持pointer，统一使用cursor:pointer;
 
-9. **当在a标签中嵌套img标签时，在某些浏览器中img会有蓝色边框**
+</details>
 
-   给img添加border：0；或者是border：none；
+<details>
+<summary>9. **当在a标签中嵌套img标签时，在某些浏览器中img会有蓝色边框**</summary> 
 
-10. **div里的内容，IE默认为居中，而FF默认为左对齐**
+   - 给img添加border：0；
+   - 或者是border：none；
+   
+</details>
+
+<details>
+<summary>10. **div里的内容，IE默认为居中，而FF默认为左对齐**</summary> 
 
   可以尝试增加代码margin: 0 auto;
 
-11. **万能float 闭合(非常重要!)**
+</details>
+
+<details>
+<summary>11. **万能float 闭合(非常重要!)**</summary> 
 
     将以下代码加入Global CSS 中,给需要闭合的div加上class=”clearfix”即可。
 
     ```css
-    /* Clear Fix */ 
-    .clearfix:after { content:"."; display:block; height:0; clear:both;visibility:hidden; } 
-    .clearfix { display:inline-block; } 
-    /* Hide from IE Mac */ 
-    .clearfix {display:block;} 
-    /* End hide from IE Mac */ 
-    /* end of clearfix */
-    ```
-
-    ```css
-    .clearfix{overflow:auto;_height:1%}
-    ```
-
-    ```css
     .clearfix{overflow: auto;zoom: 1;}
     ```
+    
+</details>
 
-12. **表单元素行高不一致**
+<details>
+<summary>12. **表单元素行高不一致**</summary> 
 
-    给表单元素添加float：left（左浮动）；或者是vertical-align：middle；（垂直对齐方式：居中）
+    - 给表单元素添加float：left（左浮动）；
+    - 或者是vertical-align：middle；（垂直对齐方式：居中）
 
-13. **上下margin的重叠问题**
+</details>
+
+<details>
+<summary>13. **上下margin的重叠问题**</summary> 
 
     - 问题症状：给上边元素设置了margin-bottom，给下边元素设置了margin-top，浏览器只会识别较大值；
 
     - 解决方案：margin-top和margin-bottom中选择一个，只设置其中一个值；
 
-14. **body 对象**
+</details>
+
+<details>
+<summary>14. **body 对象**</summary> 
 
     - 问题症状：FF的 body 在 body 标签没有被浏览器完全读入之前就存在，而IE则必须在 body 完全被读入之后才存在。这会产生在IE下，文档没有载入完时，在body上appendChild会出现空白页面的问题
     - 解决方法：一切在body上插入节点的动作，全部在onload后进行
 
-15. **click在ios上有300ms延迟，原因及如何解决？**
+</details>
+
+<details>
+<summary>15. **click在ios上有300ms延迟，原因及如何解决？**</summary> 
 
     - 粗暴型，禁用缩放
 
@@ -359,7 +385,7 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 
     - 利用FastClick，其原理是：检测到touchend事件后，立刻出发模拟click事件，并且把浏览器300毫秒之后真正出发的事件给阻断掉
 
-
+</details>
 
 
 ## 面试相关
