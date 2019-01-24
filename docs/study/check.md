@@ -43,11 +43,11 @@ check:
 
   　　1. 背景色
 
-  　　2. 背景图
+    　　2. 背景图
 
-  　　3. border
+    　　3. border
 
-  　　4. children
+    　　4. children
 
     　　5. outline
 
@@ -55,4 +55,4 @@ check:
 
 - [ ] WebSocket
 
-- [ ] 
+- [ ] requestAnimationFrame

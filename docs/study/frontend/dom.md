@@ -24,7 +24,7 @@
 
 
 
-## DOM共12种节点
+**DOM共12种节点**
 
 常见节点类型：
 
@@ -40,8 +40,10 @@
 
 
 
+## DOM操作
 
-## DOM获取节点
+
+### 获取节点
 
 **document.getElementById**:返回对拥有指定 ID 的<span style='color:red'>第一个</span>对象的引用
 
@@ -82,7 +84,13 @@ document.getElementsByTagName("input");
 
 
 
-!> 由于节点比较多，所以一般用遍历元素节点的方法
+**element.querySelector("cssSelector")**：只选一个，返回一个对象。返回的是静态的
+
+**element.querySelectorAll("cssSelector")**：选择一个集合，返回一个和NodeList一样的类数组对象。返回的是静态的
+
+
+
+!> 由于节点比较多，所以一般用元素节点的方法
 
 **parentElement**：返回当前元素的父元素节点
 
@@ -98,3 +106,119 @@ document.getElementsByTagName("input");
 
 
 
+### 创建节点
+
+**Document.createElement(tagName)**:创建元素节点
+
+**Document.createTextNode(textContent)**:创建文本节点
+
+```html
+element.appendChild(textNode);
+```
+
+
+
+### 节点操作
+
+!> 如果节点有父节点，会先从父节点移除
+
+**添加：parentElement.appendChild(willAppendElement)**：加入的节点为父节点的最后一个节点;
+
+**前插入：parentElement.insertBefore(willInsertElement,reference element)**：在参照节点（reference element）之前插入节点(willInsertElement),两个互为同胞（兄弟）节点;
+
+**替换：parentElement.replaceChild(willInsertElement,willReplaceElement)**：用插入的节点(willInsertElement)代替willReplaceElement节点;
+
+**移除：parentElement.removeChild(willRemoveElement)**：从DOM树中移除willRemoveElement节点;
+
+**深浅复制：ele=element.cloneNode(true|false)**：若true,则表示深度复制element节点,会复制起子节点;若false,表示浅复制,只复制element节点本身,不复制element子代节点;
+
+**后插入**：
+
+```
+function insertAfter(ele,ins){
+    ele.parentNode.insertBefore(ins,ele.nextSibling);
+}
+```
+
+
+
+## 元素属性操作
+
+
+
+ ### 获取
+
+element.getAttribute("attributeName")*;*
+
+**tagName**：获取节点的标签名
+
+**innerHTML**：设置或者获取节点内部的所有HTML代码
+
+**innerText**：设置或者获取节点内部的所有文字
+
+### 设置
+
+element.setAttribute("attributeName","value")*;*
+
+**为元素设置新的样式，注意驼峰命名法**
+
+div1.style.backgroundColor="red";
+
+**为元素同时修改多个样式cssText**
+
+div1.style.cssText="width:100px;height:100px";
+
+### 移除
+
+element.removeAttribute("attributeName")*;*
+
+
+
+### class属性
+
+由于class是es6关键字，所以用className代替
+
+由于class属性一般可以有多个 class='class1 class2 class3...'
+
+所以添加class应使用：
+
+```html
+element.className=element.className+" add";注意空格
+```
+
+删除class 封装方法：
+
+```
+HTMLElement.prototype.deleteClassName=function(del){
+        var classes=this.className.split(/\s+/);
+        for(var i=0;i<classes.length;i++){
+            if(classes[i]===del){
+                classes.splice(i,1);
+                break;
+            }
+        }
+        this.className=classes.join(" ");
+    }//后面会用到这里的代码
+```
+
+
+
+!> 原型链 HTMLDIVElement < HTMLElement < Element < Node < EventTarget < Object
+
+
+
+### 通过原型链的 <span style='color:red'>对象.属性</span> 来访问修改
+
+element.id、element.className ...
+
+
+
+### HTML5自定义属性，data-前缀加自定属性名
+
+1. 通过getAttribute()和setAttribute()来获取和设置。**set/getAttribute() 继承自Element中**
+
+2. 通过查询原型链我们发现原型中有一个dataset属性，指向DOMStringMap原型对象，他是专门记录我们自定义属性的。我们可以通过 `element.dataset.属性的后缀名` 来设置和访问，**dataset方法继承自HTMLElement原型对象**
+
+3. 过查询原型链我们发现原型中有一个attributes属性，指向NamedNodeMap对象，NamedNodeMap是一个和NodeList类似的类数组对象，他记录着元素的这个元素全部属性，他**继承自HTMLElement原型对象**；我们可以用 element.attributes[i].nodeValue 来获取共有的和自定义属性的属性值。
+
+   !> 特别地，attributes/NamedNodeMap对象在我们序列化元素的所有属性名和对应的属性值时很方便
