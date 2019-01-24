@@ -6,6 +6,8 @@
 
 ## 12种节点类型
 
+
+
 |                     节点名                      |                             | nodeType |      **nodeName**       |           **nodeValue**           |
 | :---------------------------------------------: | :-------------------------- | :------: | :---------------------: | :-------------------------------: |
 |                    元素节点                     | ELEMENT_NODE                |    1     | 标签名(大写)，P,DIV,... |               null                |
@@ -192,6 +194,7 @@ cancelAnimationFrame(1);
 
 
 
+
 ## DOM操作 - 获取节点
 
 **document.getElementById**:返回对拥有指定 ID 的<span style='color:red'>第一个</span>对象的引用
@@ -337,33 +340,125 @@ for (i = 0; i < x.length; i++) {
 
 
 
-### 创建节点
-
-**Document.createElement(tagName)**:创建元素节点
-
-**Document.createTextNode(textContent)**:创建文本节点
-
-```html
-element.appendChild(textNode);
-```
 
 
 
-### 节点操作
+
+## DOM操作 - 创建节点
+
+1. 创建一个属性节点
+
+   document.createAttribute(*attributename*)
+
+   ```
+   创建 class 属性, 属性值为 "democlass", 并将clas属性添加到 H1 元素中:
+   var att=document.createAttribute("class");
+   att.value="democlass";
+   document.getElementsByTagName("H1")[0].setAttributeNode(att);
+   ```
+
+2. 创建注释节点
+
+   document.createComment(*text*)
+
+   ```
+   可创建注释节点, 并插入HTML文档:
+   var c=document.createComment("My personal comments");
+   document.body.appendChild(c);
+   输出结果：
+   <!--My personal comments-->
+   ```
+
+   
+
+3. 创建空的 DocumentFragment 对象
+
+   document.createDocumentFragment()
+
+   ```
+   创建一个 documentFragment 节点:
+   var d=document.createDocumentFragment();
+   d.appendChild(document.getElementsByTagName("LI")[0]);
+   d.childNodes[0].childNodes[0].nodeValue="Milk";
+   document.getElementsByTagName("UL")[0].appendChild(d);
+   ```
+
+   
+
+4. 创建元素节点
+
+   document.createElement(*tagName*)
+
+   ```
+   创建一个按钮:
+   var btn=document.createElement("BUTTON");
+   ```
+
+   
+
+5. 创建文本节点
+
+   document.createTextNode(*text*)
+
+   ```
+   创建一个文本节点:
+   var btn=document.createTextNode("Hello World");
+   
+   HTML元素通常是由元素节点和文本节点组成。
+   创建一个标题 (H1), 你必须创建 "H1" 元素和文本节点:
+   var h=document.createElement("H1")
+   var t=document.createTextNode("Hello World");
+   h.appendChild(t);
+   ```
+
+   
+
+
+
+
+
+
+
+## DOM操作 - 操作节点
 
 !> 如果节点有父节点，会先从父节点移除
 
-**添加：parentElement.appendChild(willAppendElement)**：加入的节点为父节点的最后一个节点;
 
-**前插入：parentElement.insertBefore(willInsertElement,reference element)**：在参照节点（reference element）之前插入节点(willInsertElement),两个互为同胞（兄弟）节点;
 
-**替换：parentElement.replaceChild(willInsertElement,willReplaceElement)**：用插入的节点(willInsertElement)代替willReplaceElement节点;
+1. 添加节点
 
-**移除：parentElement.removeChild(willRemoveElement)**：从DOM树中移除willRemoveElement节点;
+   *node*.appendChild(*node*)
 
-**深浅复制：ele=element.cloneNode(true|false)**：若true,则表示深度复制element节点,会复制起子节点;若false,表示浅复制,只复制element节点本身,不复制element子代节点;
+   ```
+   如果文档树中已经存在了 newchild，它将从文档树中删除，然后重新插入它的新位置。如果 newchild 是 DocumentFragment 节点，则不会直接插入它，而是把它的子节点按序插入当前节点的 childNodes[] 数组的末尾。
+   你可以使用 appendChild() 方法移除元素到另外一个元素。
+   var node=document.getElementById("myList2").lastChild;
+   document.getElementById("myList1").appendChild(node);
+   ```
 
-**后插入**：
+2. 前插入节点
+
+   *node*.insertBefore(*newnode,existingnode*)
+
+   两个互为兄弟节点
+
+3. 替换节点
+
+   *node*.replaceChild(*newnode*,*oldnode*)
+
+4. 移除节点
+
+   *node*.removeChild(*node*)
+
+5. 深浅复制节点
+
+   *node*.cloneNode(*deep*)
+
+   若true,则表示深度复制element节点,会复制起子节点;若false,表示浅复制,只复制element节点本身,不复制element子代节点
+
+6. 后插入
+
+   自己实现
 
 ```
 function insertAfter(ele,ins){
