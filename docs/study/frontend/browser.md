@@ -419,7 +419,13 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 <link rel="preload" href="/main.js" as="script">
 ```
 
+#### preload的as属性
 
+1. 浏览器可以设置正确的资源加载优先级，这种方式可以确保资源根据其重要性依次加载， 所以，Preload既不会影响重要资源的加载，又不会让次要资源影响自身的加载。、
+2. 浏览器可以确保请求是符合内容安全策略的，比如，如果我们的安全策略是`Content-Security-Policy: script-src 'self'`，只允许浏览器执行自家服务器的脚本，as 值为 script 的外部服务器资源就不会被加载。
+3. 浏览器能根据 as 的值发送适当的 Accept 头部信息
+4. 浏览器通过 as 值能得知资源类型，因此当获取的资源相同时，浏览器能够判断前面获取的资源是否能重用。
+5. 可能的 as 值包括："script"、"style"、"image"、"media"、"document"
 
 #### prefetch
 
@@ -439,7 +445,7 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 
 defer执行时间是在所有元素解析完成后，DOMContentLoaded事件触发前。
 
-async是脚本下载完成后，立即执行。所以多个async脚本执行顺序不是固定的。所以<span style='color:red'>智能用于加载一些独立无依赖的代码，如第三方统计等</span>
+async是脚本下载完成后，立即执行。所以多个async脚本执行顺序不是固定的。所以<span style='color:red'>智能用于加载一些独立无依赖的代码，如第三方统计等</span>。而且async<span style='color:red'>会阻塞 window 的 onload 事件</span>。
 
 
 
@@ -465,6 +471,17 @@ async是脚本下载完成后，立即执行。所以多个async脚本执行顺�
 <script type="text/javascript" src="//js.cdn.com/currentPage-part3.js" defer></script>
 </body>
 </html>
+```
+
+
+
+你想尽可能快的加载一段统计页面访问量的代码，但又不愿意这段代码的加载给页面渲染造成延迟从而影响用户体验，关键是，你不想延迟 window 的 onload 事件。
+
+有了preload， 分分钟搞定。
+
+```html
+<link rel="preload" as="script" href="async_script.js"
+      onload="var script = document.createElement('script'); script.src = this.href; document.body.appendChild(script);">
 ```
 
 
