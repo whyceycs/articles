@@ -445,7 +445,7 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 
 defer执行时间是在所有元素解析完成后，DOMContentLoaded事件触发前。
 
-async是脚本下载完成后，立即执行。所以多个async脚本执行顺序不是固定的。所以<span style='color:red'>智能用于加载一些独立无依赖的代码，如第三方统计等</span>。而且async<span style='color:red'>会阻塞 window 的 onload 事件</span>。
+async是脚本下载完成后，立即执行。所以多个async脚本执行顺序不是固定的。所以<span style='color:red'>只能用于加载一些独立无依赖的代码，如第三方统计等</span>。而且async<span style='color:red'>会阻塞 window 的 onload 事件</span>。
 
 
 
