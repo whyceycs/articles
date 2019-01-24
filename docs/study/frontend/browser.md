@@ -389,6 +389,86 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 </details>
 
 
+
+## prefetch, preload, dns-prefetch，defer和async
+
+参考:[https://segmentfault.com/a/1190000011577248](https://segmentfault.com/a/1190000011577248)
+
+
+
+#### dns-prefetch
+
+预先解析DNS
+
+非常简单，效果立竿见影，加快页面加载时间，多用于预解析CDN的地址的DNS
+
+```html
+<!--在head标签中，越早越好-->
+<link rel="dns-prefetch" href="//example.com">
+```
+
+
+
+#### preload
+
+浏览器遇到rel='preload'的link标签时，会立即开始下载(不阻塞parser)，并放入内存中，<span style='color:red'>不会执行其中语句</span>。只有当遇到script标签加载相同资源时，浏览器才会直接将预先加载的js执行掉。
+
+<span style='color:red'>parser读到script标签时，如果已下载，则执行，如果没下载完，会等到下载完再执行。</span>
+
+```html
+<link rel="preload" href="/main.js" as="script">
+```
+
+
+
+#### prefetch
+
+浏览器会在空闲时，下载rel='prefetch'的link资源，并缓存到disk。有使用时，从disk缓存读取。
+
+如果还没下载完之前，发现script标签引用了该资源，浏览器会<span style='color:red'>再次发起请求</span>，会严重影响性能，所以不要在当前页面马上要用的资源上用prefetch，要用preload。
+
+```html
+<link href="main.js" rel="prefetch">
+```
+
+
+
+#### defer和async
+
+是script标签的两个属性，用于<span style='color:red'>在不阻塞页面文档解析</span>的前提下，控制脚本的下载和执行。
+
+defer执行时间是在所有元素解析完成后，DOMContentLoaded事件触发前。
+
+async是脚本下载完成后，立即执行。所以多个async脚本执行顺序不是固定的。所以<span style='color:red'>智能用于加载一些独立无依赖的代码，如第三方统计等</span>
+
+
+
+所以较好的脚本加载顺序如下：
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Faster</title>
+  <link rel="dns-prefetch" href="//cdn.com/">
+  <link rel="preload" href="//js.cdn.com/currentPage-part1.js" as="script">
+  <link rel="preload" href="//js.cdn.com/currentPage-part2.js" as="script">
+  <link rel="preload" href="//js.cdn.com/currentPage-part3.js" as="script">
+
+  <link rel="prefetch" href="//js.cdn.com/prefetch.js">
+</head>
+<body>
+
+<script type="text/javascript" src="//js.cdn.com/currentPage-part1.js" defer></script>
+<script type="text/javascript" src="//js.cdn.com/currentPage-part2.js" defer></script>
+<script type="text/javascript" src="//js.cdn.com/currentPage-part3.js" defer></script>
+</body>
+</html>
+```
+
+
+
 ## 面试相关
 
 <details>
