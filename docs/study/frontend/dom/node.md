@@ -158,13 +158,10 @@
 
 ## 延伸：requestAnimationFrame
 
-```text
+```tex
 计时器一直是javascript动画的核心技术。而编写动画循环的关键是要知道延迟时间多长合适。一方面，循环间隔必须足够短，这样才能让不同的动画效果显得平滑流畅；另一方面，循环间隔还要足够长，这样才能确保浏览器有能力渲染产生的变化。
-
 大多数电脑显示器的刷新频率是60Hz，大概相当于每秒钟重绘60次。大多数浏览器都会对重绘操作加以限制，不超过显示器的重绘频率，因为即使超过那个频率用户体验也不会有提升。因此，最平滑动画的最佳循环间隔是1000ms/60，约等于16.6ms。
-
 而setTimeout和setInterval的问题是，它们都不精确。它们的内在运行机制决定了时间间隔参数实际上只是指定了把动画代码添加到浏览器UI线程队列中以等待执行的时间。如果队列前面已经加入了其他任务，那动画代码就要等前面的任务完成后再执行。
-
 requestAnimationFrame采用系统时间间隔，保持最佳绘制效率，不会因为间隔时间过短，造成过度绘制，增加开销；也不会因为间隔时间太长，使用动画卡顿不流畅，让各种网页动画效果能够有一个统一的刷新机制，从而节省系统资源，提高系统性能，改善视觉效果。
 ```
 
@@ -195,10 +192,7 @@ cancelAnimationFrame(1);
 
 
 
-## DOM操作
-
-
-### 获取节点
+## DOM操作 - 获取节点
 
 **document.getElementById**:返回对拥有指定 ID 的<span style='color:red'>第一个</span>对象的引用
 
@@ -206,8 +200,6 @@ cancelAnimationFrame(1);
 document.getElementById("myHeader");
 <h1 id="myHeader" onclick="getValue()">This is a header</h1>
 ```
-
-
 
 **document.getElement<span style='color:red'>s</span>ByName**:返回带有指定名称的对象的集合
 
@@ -241,23 +233,107 @@ document.getElementsByTagName("input");
 
 **element.querySelector("cssSelector")**：只选一个，返回一个对象。返回的是静态的
 
+```javascript
+获取文档中第一个 <p> 元素：
+document.querySelector("p");
+
+获取文档中 class="example" 的第一个元素:
+document.querySelector(".example");
+
+获取文档中 class="example" 的第一个 <p> 元素:
+document.querySelector("p.example");
+
+获取文档中有 "target" 属性的第一个 <a> 元素：
+document.querySelector("a[target]");
+
+假定你选择了两个选择器: <h2> 和 <h3> 元素。
+以下代码将为文档的第一个 <h2> 元素添加背景颜色：
+<h2>A h2 element</h2>
+<h3>A h3 element</h3>
+document.querySelector("h2, h3").style.backgroundColor = "red";
+
+但是，如果文档中 <h3> 元素位于 <h2> 元素之前，<h3> 元素将会被设置指定的背景颜色。
+<h3>A h3 element</h3>
+<h2>A h2 element</h2>
+document.querySelector("h2, h3").style.backgroundColor = "red";
+```
+
+
+
 **element.querySelectorAll("cssSelector")**：选择一个集合，返回一个和NodeList一样的类数组对象。返回的是静态的
 
+```javascript
+获取文档中所有的 <p> 元素， 并为匹配的第一个 <p> 元素 (索引为 0) 设置背景颜色:
+// 获取文档中所有的 <p> 元素
+var x = document.querySelectorAll("p"); 
+// 设置第一个 <p> 元素的背景颜色
+x[0].style.backgroundColor = "red";
+
+获取文档中所有 class="example" 的 <p> 元素， 并为匹配的第一个 <p> 元素 (索引为 0) 设置背景颜色:
+// 获取文档中所有 class="example" 的 <p> 元素
+var x = document.querySelectorAll("p.example"); 
+// 设置 class="example" 的第一个 <p> 元素的背景颜色
+x[0].style.backgroundColor = "red";
+
+计算文档中 class="example" 的 <p> 元素的数量（使用 NodeList 对象的 length 属性）:
+var x = document.querySelectorAll(".example").length;
+
+设置文档中所有 class="example" 元素的背景颜色:
+var x = document.querySelectorAll(".example");
+var i;
+for (i = 0; i < x.length; i++) {
+    x[i].style.backgroundColor = "red";
+}
+
+设置文档中所有 <p> 元素的背景颜色：
+var x = document.querySelectorAll(".example");
+var i;
+for (i = 0; i < x.length; i++) {
+    x[i].style.backgroundColor = "red";
+}
+
+查找文档中共包含 "target" 属性的 <a> 标签，并为其设置边框:
+var x = document.querySelectorAll("a[target]");
+var i;
+for (i = 0; i < x.length; i++) {
+    x[i].style.border = "10px solid red";
+}
+
+查找每个父元素为 <div> 的 <p> 元素，并为其设置背景颜色:
+var x = document.querySelectorAll("div > p");
+var i;
+for (i = 0; i < x.length; i++) {
+    x[i].style.backgroundColor = "red";
+}
+
+给文档中所有的 <h2>, <div> 和 <span> 元素设置背景颜色：
+var x = document.querySelectorAll("h2, div, span");
+var i;
+for (i = 0; i < x.length; i++) {
+    x[i].style.backgroundColor = "red";
+}
+```
 
 
-!> 由于节点比较多，所以一般用元素节点的方法
 
-**parentElement**：返回当前元素的父元素节点
+浏览器对Element.querySelector和Element.querySelectorAll的实现有错误。大神Andrew Dupont提出了一种方法修复这个bug，被广泛应用到各个框架中，在selector前面指定调用元素的id，限制匹配范围。给搜索加了一层id的限制，巧妙的利用了这个bug，得到正确结果
 
-**children**：返回当前元素的元素子节点
 
-**firstElementChild**：返回的是第一个元素子节点
 
-**lastElementChild**：返回的是最后一个元素子节点
+### 节点与元素节点
 
-**nextElementSibling**：返回的是后一个兄弟元素节点
+| 节点             |                                                | 元素节点                |                            |
+| ---------------- | ---------------------------------------------- | ----------------------- | -------------------------- |
+| .parentNode      | 返回某节点的父节点，没有父节点则返回 null      | .parentElement          | 返回当前元素的父元素节点   |
+| .childNodes      | childNodes只会返回文本和元素的节点             | .children               | 返回当前元素的元素子节点   |
+| .firstChild      | 返回被选节点的第一个子节点                     | .firstElementChild      | 返回的是第一个元素子节点   |
+| .lastChild       | 返回文档的最后一个子节点                       | .lastElementChild       | 返回的是最后一个元素子节点 |
+| .nextSibling     | 返回某个元素之后紧跟的节点（处于同一树层级中） | .nextElementSibling     | 返回的是后一个兄弟元素节点 |
+| .previousSibling | 返回某节点之前紧跟的节点（处于同一树层级）     | .previousElementSibling | 返回的是前一个兄弟元素节点 |
 
-**previousElementSibling**：返回的是前一个兄弟元素节点
+1. 由于节点比较多，所以一般用元素节点的方法
+2. 如需循环子节点列表，使用 nextSibling 属性，要比使用父对象的 childNodes 列表效率更高
+3. document子节点的parentElement为空，parentNode为#document
 
 
 
