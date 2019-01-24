@@ -1,8 +1,8 @@
-# DOM & BOM
 
 
+# DOM 
 
-## DOM
+
 
 **文档对象模型（Document Object Model，DOM）是一种用于HTML和XML文档的编程接口。它给文档提供了一种结构化的表示方法，可以改变文档的内容和呈现方式。**
 
@@ -24,7 +24,7 @@
 
 
 
-### DOM共12种节点
+## DOM共12种节点
 
 常见节点类型：
 
@@ -41,7 +41,7 @@
 
 
 
-### DOM获取节点
+## DOM获取节点
 
 **document.getElementById**:返回对拥有指定 ID 的<span style='color:red'>第一个</span>对象的引用
 
