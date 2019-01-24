@@ -346,7 +346,7 @@ for (i = 0; i < x.length; i++) {
 
 ## DOM操作 - 创建节点
 
-1. 创建一个属性节点
+### 1. 创建一个属性节点
 
    document.createAttribute(*attributename*)
 
@@ -357,7 +357,7 @@ for (i = 0; i < x.length; i++) {
    document.getElementsByTagName("H1")[0].setAttributeNode(att);
    ```
 
-2. 创建注释节点
+### 2. 创建注释节点
 
    document.createComment(*text*)
 
@@ -371,7 +371,7 @@ for (i = 0; i < x.length; i++) {
 
    
 
-3. 创建空的 DocumentFragment 对象
+### 3. 创建空的 DocumentFragment 对象
 
    document.createDocumentFragment()
 
@@ -385,7 +385,7 @@ for (i = 0; i < x.length; i++) {
 
    
 
-4. 创建元素节点
+### 4. 创建元素节点
 
    document.createElement(*tagName*)
 
@@ -396,7 +396,7 @@ for (i = 0; i < x.length; i++) {
 
    
 
-5. 创建文本节点
+### 5. 创建文本节点
 
    document.createTextNode(*text*)
 
@@ -425,7 +425,7 @@ for (i = 0; i < x.length; i++) {
 
 
 
-1. 添加节点
+### 1. 添加节点
 
    *node*.appendChild(*node*)
 
@@ -436,27 +436,27 @@ for (i = 0; i < x.length; i++) {
    document.getElementById("myList1").appendChild(node);
    ```
 
-2. 前插入节点
+### 2. 前插入节点
 
    *node*.insertBefore(*newnode,existingnode*)
 
    两个互为兄弟节点
 
-3. 替换节点
+### 3. 替换节点
 
    *node*.replaceChild(*newnode*,*oldnode*)
 
-4. 移除节点
+### 4. 移除节点
 
    *node*.removeChild(*node*)
 
-5. 深浅复制节点
+### 5. 深浅复制节点
 
    *node*.cloneNode(*deep*)
 
    若true,则表示深度复制element节点,会复制起子节点;若false,表示浅复制,只复制element节点本身,不复制element子代节点
 
-6. 后插入
+### 6. 后插入
 
    自己实现
 
@@ -468,55 +468,48 @@ function insertAfter(ele,ins){
 
 
 
-## 元素属性操作
+## DOM操作 - 元素属性
 
 
 
- ### 获取
+ ### 获取属性
 
-element.getAttribute("attributeName")*;*
-
-**tagName**：获取节点的标签名
-
-**innerHTML**：设置或者获取节点内部的所有HTML代码
-
-**innerText**：设置或者获取节点内部的所有文字
-
-### 设置
-
-element.setAttribute("attributeName","value")*;*
-
-**为元素设置新的样式，注意驼峰命名法**
-
-div1.style.backgroundColor="red";
-
-**为元素同时修改多个样式cssText**
-
-div1.style.cssText="width:100px;height:100px";
-
-### 移除
-
-element.removeAttribute("attributeName")*;*
+1. 使用**element.getAttribute("attributeName")*;***
+2. 使用原型链的 <span style='color:red'>对象.属性</span> 来访问
+   1. element.tagName：获取节点的标签名
+   2. element.innerHTML：获取节点内部的所有HTML代码
+   3. element.innerText：获取节点内部的所有文字
 
 
 
-### class属性
+### 设置修改属性
 
-由于class是es6关键字，所以用className代替
+1. 使用**element.setAttribute("attributeName","value")*;***
+2. 使用原型链的 <span style='color:red'>对象.属性</span> 来修改****
+3. 为元素设置新样式，注意驼峰命名法
+   1. div1.style.backgroundColor="red";
+   2. 同时修改多个样式：div1.style.<span style='color:red'>cssText</span>="width:100px;height:100px";
 
-由于class属性一般可以有多个 class='class1 class2 class3...'
+### 移除属性
 
-所以添加class应使用：
+1. 使用**element.removeAttribute("attributeName")*;***
+
+!> 原型链 HTMLDIVElement < HTMLElement < Element < Node < EventTarget < Object
+
+### 延伸 - class属性
+
+1. class是es6关键字，所以用**className**代替
+2. 由于class属性一般可以有多个 class='class1 class2 class3...'所以添加class应使用html5的**.classList.add**或者
 
 ```html
-element.className=element.className+" add";注意空格
+element.className=element.className+" newClassName";注意空格
 ```
 
-删除class 封装方法：
+3. 删除class采用**.classList.remove**或者封装方法：
 
 ```
 HTMLElement.prototype.deleteClassName=function(del){
-        var classes=this.className.split(/\s+/);
+        var classes=this.className.split(' ');
         for(var i=0;i<classes.length;i++){
             if(classes[i]===del){
                 classes.splice(i,1);
@@ -529,22 +522,11 @@ HTMLElement.prototype.deleteClassName=function(del){
 
 
 
-!> 原型链 HTMLDIVElement < HTMLElement < Element < Node < EventTarget < Object
+### data-前缀加自定属性名
 
+1. HTML5的自定义属性名
+2. 通过getAttribute()和setAttribute()来获取和设置。**set/getAttribute() 继承自Element中**
+3. 通过查询原型链我们发现原型中有一个dataset属性，指向DOMStringMap原型对象，他是专门记录我们自定义属性的。我们可以通过 `element.dataset.属性的后缀名` 来设置和访问，**dataset方法继承自HTMLElement原型对象**
+4. 过查询原型链我们发现原型中有一个attributes属性，指向NamedNodeMap对象，NamedNodeMap是一个和NodeList类似的类数组对象，他记录着元素的这个元素全部属性，他**继承自HTMLElement原型对象**；我们可以用 element.attributes[i].nodeValue 来获取共有的和自定义属性的属性值。
 
-
-### 通过原型链的 <span style='color:red'>对象.属性</span> 来访问修改
-
-element.id、element.className ...
-
-
-
-### HTML5自定义属性，data-前缀加自定属性名
-
-1. 通过getAttribute()和setAttribute()来获取和设置。**set/getAttribute() 继承自Element中**
-
-2. 通过查询原型链我们发现原型中有一个dataset属性，指向DOMStringMap原型对象，他是专门记录我们自定义属性的。我们可以通过 `element.dataset.属性的后缀名` 来设置和访问，**dataset方法继承自HTMLElement原型对象**
-
-3. 过查询原型链我们发现原型中有一个attributes属性，指向NamedNodeMap对象，NamedNodeMap是一个和NodeList类似的类数组对象，他记录着元素的这个元素全部属性，他**继承自HTMLElement原型对象**；我们可以用 element.attributes[i].nodeValue 来获取共有的和自定义属性的属性值。
-
-   !> 特别地，attributes/NamedNodeMap对象在我们序列化元素的所有属性名和对应的属性值时很方便
+!> 特别地，attributes/NamedNodeMap对象在我们序列化元素的所有属性名和对应的属性值时很方便
