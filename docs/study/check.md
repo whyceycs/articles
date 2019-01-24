@@ -14,6 +14,10 @@ check:
 
 - [ ] iframe
 
+- [ ] 连接复用
+
+- [ ] http-dns
+
 - [ ] html内容加载顺序。
 
 - [ ] ```
@@ -33,7 +37,7 @@ check:
 
 - [ ] documentfragment
 
-- [ ]  transform:translateZ(0)  will-change:transform css属性
+- [ ] transform:translateZ(0)  will-change:transform css属性
 
 - [ ] 页面渲染流程，生成各种树
 
@@ -41,13 +45,13 @@ check:
 
 - [ ] 块对象渲染顺序：一个块渲染对象的堆栈顺序是：
 
-  　　1. 背景色
+    1. 背景色
 
-    　　2. 背景图
+      　　2. 背景图
 
-    　　3. border
+      　　3. border
 
-    　　4. children
+      　　4. children
 
     　　5. outline
 
@@ -56,3 +60,5 @@ check:
 - [ ] WebSocket
 
 - [ ] requestAnimationFrame
+
+- [ ] [React Fiber 算法](https://link.jianshu.com/?t=https://www.youtube.com/watch?v=ZCuYPiUIONs)。
