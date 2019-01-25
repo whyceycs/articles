@@ -456,6 +456,8 @@ for (i = 0; i < x.length; i++) {
 
    若true,则表示深度复制element节点,会复制起子节点;若false,表示浅复制,只复制element节点本身,不复制element子代节点
 
+*无法复制绑定的事件监听器*
+
 ### 6. 后插入
 
    自己实现
@@ -530,3 +532,215 @@ HTMLElement.prototype.deleteClassName=function(del){
 4. 过查询原型链我们发现原型中有一个attributes属性，指向NamedNodeMap对象，NamedNodeMap是一个和NodeList类似的类数组对象，他记录着元素的这个元素全部属性，他**继承自HTMLElement原型对象**；我们可以用 element.attributes[i].nodeValue 来获取共有的和自定义属性的属性值。
 
 !> 特别地，attributes/NamedNodeMap对象在我们序列化元素的所有属性名和对应的属性值时很方便
+
+
+
+## 面试相关
+
+
+
+<details>
+<summary>1.自己封装hasChildren()方法，不可用children属性</summary> 
+
+```javascript
+
+Element.prototype.hasChildren = function () {
+	var child = this.childNodes;
+	var len = child.length;
+	var arr = [];
+	for(var i = 0; i < len; i++){
+		if(child[i].nodeType == 1){
+			arr.push(child[i]);
+		}
+	}
+	return arr;
+}
+```
+
+</details>
+
+<details>
+<summary>2.找第n个兄弟节点</summary> 
+
+封装函数，返回元素ele的第n个兄弟节点，n为正，返回后面的兄弟节点，n为负，返回前面的，n为0，返回自己
+
+```javascript
+function retSiblings (ele, n) {
+	while(ele && n) {
+		if(n > 0 && ele.nextElementSibling) {
+			n--;
+			ele = ele.nextElementSibling;	//注意是要Element，否则会返回text节点即空格
+		} else if(ele.previousElementSibling){
+			n ++;
+			ele = ele.previousElementSibling;
+		}
+	}
+	return ele;
+}
+
+```
+
+- 负数也是true
+- 没找到返回null
+- 不兼容nextElementSibling/previousElementSibling 的情况下，查找nodeType为1的nextSibling/previousSibling
+
+ 
+
+</details>
+
+<details>
+<summary>3.封装函数insertAfter()</summary> 
+
+```
+//原型
+Element.prototype.insertAfter = function (newNode, existNode) {	
+//第二个参数为null时，同appendChild
+	this.insertBefore(newNode, existNode.nextElementSibling);
+}
+```
+
+```
+function insertAfter(newNode, existNode){
+    existNode.parentNode.insertBefore(newNode,existNode.nextSibling);
+}
+```
+
+
+
+</details>
+
+<details>
+<summary>4.将目标节点内部的节点顺序，逆序。</summary> 
+```
+<div> <a></a> <em></em></div> ---->    <div><em></em><a></a></div>
+```
+
+```
+
+function reverseChildrens (parent){
+	var lastChild = parent.lastChild;
+	var pre;
+	while(pre = lastChild.previousSibling){
+		var temp = parent.removeChild(pre);
+		parent.appendChild(temp);
+	}
+}
+```
+
+
+
+
+</details>
+
+<details>
+<summary>5.DOM是哪种基本的数据结构</summary> 
+
+树结构
+
+</details>
+
+<details>
+<summary>6.DOM节点的Attribute和property有何区别</summary> 
+
+- property是DOM中的属性，是JavaScript里的对象；
+- attribute是HTML标签上的特性，它的值只能够是字符串；
+
+- property能够从attribute中得到同步；
+
+- attribute不会同步property上的值；
+
+- attribute和property之间的**数据绑定是单向的**，attribute->property；
+
+- 更改property和attribute上的任意值，都会将更新反映到HTML页面中；
+
+- **对属性Property可以赋任何类型的值，而对特性Attribute只能赋值字符串！**
+
+- Attribute中**class**变为property时，为**className**，因为是保留关键字
+
+  
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>
+
+<details>
+<summary></summary> 
+
+
+
+</details>

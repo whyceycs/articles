@@ -43,6 +43,56 @@
 
 
 
+## 严格模式与混杂模式
+
+参考：[https://www.cnblogs.com/wuqiutong/p/5986191.html](https://www.cnblogs.com/wuqiutong/p/5986191.html)
+
+**严格模式：**又称标准模式，是指浏览器按照 W3C 标准解析代码。
+
+**混杂模式：**又称怪异模式或兼容模式，是指浏览器用自己的方式解析代码。
+
+**如何区分：**浏览器解析时到底使用严格模式还是混杂模式，与网页中的 DTD 直接相关。
+
+1、如果文档包含严格的 DOCTYPE ，那么它一般以严格模式呈现。**（严格 DTD ——严格模式）** 
+2、包含过渡 DTD 和 URI 的 DOCTYPE ，也以严格模式呈现，但有过渡 DTD 而没有 URI （统一资源标识符，就是声明最后的地址）会导致页面以混杂模式呈现。**（有 URI 的过渡 DTD ——严格模式；没有 URI 的过渡 DTD ——混杂模式）** 
+3、DOCTYPE 不存在或形式不正确会导致文档以混杂模式呈现。**（DTD不存在或者格式不正确——混杂模式）**
+4、<span style='color:red'>HTML5 没有 DTD</span> ，因此也就没有严格模式与混杂模式的区别，HTML5 有相对宽松的语法，实现时，已经尽可能大的实现了向后兼容。<span style='color:red'>**（ HTML5 没有严格和混杂之分）**</span>
+
+**意义：**严格模式与混杂模式存在的意义与其来源密切相关，如果说只存在严格模式，那么许多旧网站必然受到影响，如果只存在混杂模式，那么会回到当时浏览器大战时的混乱，每个浏览器都有自己的解析模式。
+
+
+
+### **严格模式与混杂模式的语句解析不同点有哪些？**
+
+1. 盒模型的高宽包含内边距padding和边框border 
+
+   在W3C标准中，如果设置一个元素的宽度和高度，指的是元素内容的宽度和高度，而在IE5.5及以下的浏览器及其他版本的Quirks模式下，IE的宽度和高度还包含了padding和border。
+
+2. 可以设置行内元素的高宽
+
+   在Standards模式下，给span等行内元素设置wdith和height都不会生效，而在quirks模式下，则会生效。
+
+3. 可设置百分比的高度
+
+   在standards模式下，一个元素的高度是由其包含的内容来决定的，如果父元素没有设置高度，子元素设置一个百分比的高度是无效的。
+
+4. 用margin:0 auto设置水平居中在IE下会失效
+
+   使用margin:0 auto在standards模式下可以使元素水平居中，但在quirks模式下却会失效,quirk模式下的解决办法，用text-align属性:
+
+   ```
+   body{text-align:center};#content{text-align:left}
+   ```
+5. quirk模式下设置图片的padding会失效
+
+6. quirk模式下Table中的字体属性不能继承上层的设置
+
+7. quirk模式下white-space:pre会失效
+
+
+
+
+
 ## 渲染原理
 
 参考：
@@ -767,3 +817,38 @@ visibility：hidden指的是元素不可见但存在，保留空间，不影响�
 
 
 </details>
+
+<details>
+<summary>16.Doctype作用？标准模式与兼容模式各有什么区别?HTML5 为什么只需要写 DOCTYPE HTML？</summary> 
+
+参见 [DOM节点](study/frontend/dom/node?id=_12种节点类型)
+
+1.  _<!DOCTYPE>声明位于位于HTML文档中的第一行，处于 <html> 标签之前。告知浏览器的解析器用什么文档标准解析这个文档。DOCTYPE不存在或格式不正确会<span style='color:red'>导致文档以兼容模式呈现</span>。
+
+2. 标准模式的排版 和JS运作模式都是以该浏览器支持的最高标准运行。在兼容模式中，页面以宽松的向后兼容的方式显示,模拟老式浏览器的行为以防止站点无法工作。
+
+3. HTML5 不基于 SGML，因此不需要对DTD进行引用，但是需要doctype来规范浏览器的行为（让浏览器按照它们应该的方式来运行）而HTML4.01基于SGML,所以需要对DTD进行引用，才能告知浏览器文档所使用的文档类型。
+
+</details>
+
+<details>
+<summary>17.如何区分HTML5</summary> 
+
+- DOCTYPE声明
+- 新增的结构元素
+- 功能元素
+
+</details>
+
+<details>
+<summary>18.HTML与XHTML的区别</summary> 
+
+- XHTML 与 HTML 4.01 标准没有太多的不同
+- XHTML 元素必须被正确地嵌套。
+- XHTML 元素必须被关闭。
+- 标签名必须用小写字母。
+- XHTML 文档必须拥有根元素。
+
+</details>
+
+

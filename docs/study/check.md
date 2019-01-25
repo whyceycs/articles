@@ -8,11 +8,17 @@ check:
 
 - [ ] http
 
+- [ ] ```
+    html5shim
+    ```
+
 - [ ] 回流，回流优化
 
 - [ ] manifest
 
 - [ ] iframe
+
+- [ ] 柯里化
 
 - [ ] 连接复用
 
