@@ -15,6 +15,8 @@
 
 
 
+## Window
+
 window对象是BOM的<span style='color:red'>顶层(核心)</span>对象，所有对象都是通过它延伸出来的，也可以称为window的子对象。由于window是顶层对象，因此调用它的子对象时可以不显示的指明window对象。
 
 ```
@@ -26,7 +28,7 @@ JavaScript中的任何一个全局函数或变量都是window的属性。
 
 
 
-## BOM子对象
+## Window子对象
 
 
 
@@ -100,7 +102,7 @@ History 对象方法:
 
 #### Location 对象属性:
 
-完整的URL由这几个部分构成:`protocol://hostname:port/path?query#fragment`
+完整的URL由这几个部分构成:`protocol://hostname:port/pathname?query#fragment`
 
 | 属性                                                         | 描述                                                        | http://www.home.com:8080/windows/location/page.html?ver=1.0&id=timlq#love |
 | ------------------------------------------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------ |
@@ -108,7 +110,7 @@ History 对象方法:
 | [host](http://www.runoob.com/jsref/prop-loc-host.html)       | 返回一个URL的主机名和端口                                   | www.home.com:8080                                            |
 | [hostname](http://www.runoob.com/jsref/prop-loc-hostname.html) | 返回URL的主机名                                             | www.home.com                                                 |
 | [href](http://www.runoob.com/jsref/prop-loc-href.html)       | 返回完整的URL                                               | 整体url:http://www.home.com:8080/windows/location/page.html?ver=1.0&id=timlq#love |
-| [pathname](http://www.runoob.com/jsref/prop-loc-pathname.html) | 返回的URL路径名。                                           | /windows/location/page.html                                  |
+| [pathname](http://www.runoob.com/jsref/prop-loc-pathname.html) | 返回的URL路径名（<span style='color:red'>带/号</span>）     | /windows/location/page.html                                  |
 | [port](http://www.runoob.com/jsref/prop-loc-port.html)       | 返回一个URL服务器使用的端口号                               | 8080<br/>如果采用默认的80端口(update:即使添加了:80)，那么返回值并不是默认的80而是<span style='color:red'>空字符</span>。 |
 | [protocol](http://www.runoob.com/jsref/prop-loc-protocol.html) | 返回一个URL协议                                             | http                                                         |
 | [search](http://www.runoob.com/jsref/prop-loc-search.html)   | 返回一个URL的查询部分(<span style='color:red'>带?号</span>) | ?ver=1.0&id=timlq                                            |
@@ -160,6 +162,123 @@ Screen 对象属性
 | [height](http://www.runoob.com/jsref/prop-screen-height.html) | 返回屏幕的总高度                         |
 | [pixelDepth](http://www.runoob.com/jsref/prop-screen-pixeldepth.html) | 返回屏幕的颜色分辨率（每象素的位数）     |
 | [width](http://www.runoob.com/jsref/prop-screen-width.html)  | 返回屏幕的总宽度                         |
+
+
+
+## Window对象方法
+
+### alert(message)
+
+显示带有一条指定消息和一个 **确认** 按钮的警告框
+
+
+
+### confirm(message)
+
+用于显示一个带有指定消息和确认及取消按钮的对话框。如果访问者点击"确定"，此方法返回true，否则返回false。
+
+```
+var r=confirm("按下按钮!");
+    if (r==true){
+        
+    }
+    else{
+       
+    }
+```
+
+
+
+### prompt(msg,defaultText)
+
+用于显示可提示用户进行输入的对话框。这个方法返回用户输入的字符串。
+
+**msg**:相当于title
+
+**defaultText**：类似占位符，提前输入
+
+```
+var person=prompt("请输入你的名字","Harry Potter"); 
+    if (person){ 
+     x="你好 " + person + "! 今天感觉如何?"; 
+    } 
+```
+
+
+
+
+
+
+
+### setTimeout(function, milliseconds, param1, param2, ...)
+
+用于在指定的毫秒数后调用函数或计算表达式
+
+| 参数                | 描述                                                         |
+| ------------------- | ------------------------------------------------------------ |
+| code/function       | 必需。要调用一个代码串，也可以是一个函数。                   |
+| milliseconds        | 可选。执行或调用 code/function 需要等待的时间，以**毫秒**计。默认为 0。 |
+| param1, param2, ... | 可选。 传给执行函数的其他参数（IE9 及其更早版本不支持该参数）。 |
+
+返回一个 ID（数字），可以将这个ID传递给<span style='color:red'>clearInterval()，clearTimeout()</span>以取消执行。
+
+
+
+### clearTimeout(id_of_settimeout)
+
+可取消由setTimeout()方法设置的定时操作,参数必须是由 setTimeout() 或者setInterval()返回的 ID 值。
+
+```
+var myVar;
+function myFunction() {
+    myVar = setTimeout(function(){ alert("Hello"); }, 3000);
+}
+function myStopFunction() {
+    clearTimeout(myVar);
+}
+```
+
+
+
+### setInterval(function, milliseconds, param1, param2, ...)
+
+按照指定的周期（以毫秒计）来调用函数或计算表达式
+
+| 参数                | 描述                                                         |
+| ------------------- | ------------------------------------------------------------ |
+| code/function       | 必需。要调用一个代码串，也可以是一个函数。                   |
+| milliseconds        | 必须。周期性执行或调用 code/function 之间的时间间隔，以**毫秒**计。 |
+| param1, param2, ... | 可选。 传给执行函数的其他参数（IE9 及其更早版本不支持该参数）。 |
+
+返回一个 ID（数字），可以将这个ID传递给clearInterval()，clearTimeout() 以取消执行。
+
+------
+
+
+
+### clearInterval(id_of_setinterval)
+
+取消由 setInterval() 函数设定的定时执行操作,参数必须是由 setTimeout() 或者setInterval()返回的 ID 值。
+
+```
+function move() {
+  var elem = document.getElementById("myBar"); 
+  var width = 0;
+  var id = setInterval(frame, 100);
+  function frame() {
+    if (width == 100) {
+      clearInterval(id);
+    } else {
+      width++; 
+      elem.style.width = width + '%'; 
+    }
+  }
+}
+```
+
+
+
+***setTimeout和setInterval共享ID池，所以clearInterval和clearTimeout都能取消这两个。***
 
 
 
