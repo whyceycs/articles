@@ -44,9 +44,9 @@ JavaScript中的任何一个全局函数或变量都是window的属性。
 **返回窗口中所有命名的框架**
 
 - 该集合是 Window 对象的数组
-- 每个 Window 对象在窗口中含有一个框架或 <iframe>
+- 每个 Window 对象在窗口中含有一个框架或 < iframe >
 - frames[] 数组中引用的框架可能还包括框架，它们自己也具有 frames[] 数组
-- 该属性也可用于 <frame> 元素，但是 HTML5 不支持 <frame> 元素
+- 该属性也可用于 < frame > 元素，但是 HTML5 不支持 < frame > 元素
 
 ```
 <!DOCTYPE html>
