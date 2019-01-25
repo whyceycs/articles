@@ -202,3 +202,13 @@ window.open('http://www.runoob.com', '_blank');
 
 </details>
 
+<details>
+<summary>3.实现每隔一秒钟弹出一个对话框，且此弹出过程持续5秒钟 </summary> 
+```javascript
+var id= setInterval(function() {alert("Hello JavaScript");},1000) 
+setTimeout(function( ) {clearInterval(id) ; } , 5*1000)
+```
+
+</details>
+
+

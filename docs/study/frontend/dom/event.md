@@ -355,6 +355,7 @@ CustomEvent可以给事件绑定数据，传入对象的属性会被绑定到eve
 
 </details>
 
+<details>
 <summary>10.labek相关的执行顺序</summary> 
 
 ```
@@ -442,6 +443,43 @@ var emitter = new Emitter();
     emitter.trigger('myevent', "a", "b");
 
 ```
+
+
+</details>
+
+
+<details>
+<summary>13.文本框验证（考虑浏览器兼容性）</summary> 
+页面有文本框，需要限制该文本框中只能录入数字，即：如果用户按下数字以外的其他键，文本框中无法录入；如果用户粘贴进非数字字符，也需要进行过滤。
+
+1. 需要为文本框定义 onkeypress事件，用于在录入文本时做出判断；并为文本框定义 onkyeup事件，用于过滤粘贴进来的文本。 HTML代码如下所示：
+
+```
+<input onkeypress="digitOnly(event) " onkeyup="filterChar(this) "/>
+```
+
+
+
+```
+function digitOnly(event) {
+var code= event.charCode||event.keyCode //  firefox||ie
+if( (code<48) | | (code>57) ) {
+	if(event.preventDefault) { //firefox
+		event.preventDefault( ) ;
+	}else{//IE
+    	event.returnValue = false;
+	}
+}
+```
+
+```
+function filterChar(input){
+	input.value= input.value.replace(/[^0-9]/g,'') ;
+}
+```
+
+
+
 
 
 </details>
