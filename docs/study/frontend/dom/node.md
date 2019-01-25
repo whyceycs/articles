@@ -658,3 +658,15 @@ function reverseChildrens (parent){
 - Attribute中**class**变为property时，为**className**，因为是保留关键字
 
 </details>
+
+
+<details>
+<summary>7.html能通过document获得吗？</summary> 
+
+- document.body是DOM中Document对象里的body节点
+- document.documentElement是文档对象根节点(html)的引用
+
+</details>
+
+
+

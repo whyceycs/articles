@@ -428,6 +428,8 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 <details>
 <summary>15. click在ios上有300ms延迟，原因及如何解决？</summary> 
 
+为了实现safari的双击事件的设计
+
     - 粗暴型，禁用缩放
     
     ```html
@@ -850,5 +852,22 @@ visibility：hidden指的是元素不可见但存在，保留空间，不影响�
 - XHTML 文档必须拥有根元素。
 
 </details>
+
+
+<details>
+<summary>19.判断IE6,7,8</summary> 
+
+```
+ var isIE=!!window.ActiveXObject;
+ var isIE6=isIE&&!window.XMLHttpRequest;
+ var isIE8=isIE&&!!document.documentMode;
+ var isIE7=isIE&&!isIE6&&!isIE8;
+```
+
+
+</details>
+
+
+
 
 
