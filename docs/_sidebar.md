@@ -4,6 +4,7 @@
     * [浏览器相关](study/frontend/browser.md)
     * [DOM节点相关](study/frontend/dom/node.md)
     * [DOM事件相关](study/frontend/dom/event.md)
+    * [BOM相关](study/frontend/bom.md)
 * [技术栈](boilerplate/)
   * [前端](boilerplate/frontend/)
     * [CSS](boilerplate/frontend/css/)
