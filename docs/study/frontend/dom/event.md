@@ -45,5 +45,4 @@
 
 ### 事件阶段（Event Phases）
 
-![event_phases](study/frontend/dom/event_phases.png)
-
+![event_phases](docs/study/frontend/dom/event_phases.png)
