@@ -160,3 +160,45 @@ Screen 对象属性
 | [height](http://www.runoob.com/jsref/prop-screen-height.html) | 返回屏幕的总高度                         |
 | [pixelDepth](http://www.runoob.com/jsref/prop-screen-pixeldepth.html) | 返回屏幕的颜色分辨率（每象素的位数）     |
 | [width](http://www.runoob.com/jsref/prop-screen-width.html)  | 返回屏幕的总宽度                         |
+
+
+
+## 面试相关
+
+<details>
+<summary>1.链接标记target属性的_self、_top、_parent、_blank、main、left、top各有何用处?</summary> 
+target属性的_self、_top、_parent都是针对框架的。
+
+比如你写了这样一个网页page，网页page分成frame1、frame2，frame1又分成frame1-1、frame1-2，frame1-1又分成frame1-1-1，frame1-1-2。
+
+![bomtarget](https://whyceycs.github.io/articles/study/frontend/bomtarget.png)
+
+假如你在frame1-1-1中放了一个链接。
+
+- 如果这个链接的target="_self"，那么链接会在frame1-1-1中打开。
+
+- 如果target="_parent"，那么链接会在frame1-1中打开。
+
+- 如果target="_top"，那么链接会在page中打开。
+
+- 如果target="_blank"，浏览器会另开一个新窗口显示page文档。
+- main、left、top是由Adobe Dreamweaver生成的主、左、上框架集的框架默认名。
+
+</details>
+
+<details>
+<summary>2.在新窗口 / 新标签页 打开</summary> 
+
+新窗口:
+
+```javascript
+window.open('http://www.runoob.com' , '_blank' , 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
+```
+
+新标签页:
+```javascript
+window.open('http://www.runoob.com', '_blank');
+```
+
+</details>
+
