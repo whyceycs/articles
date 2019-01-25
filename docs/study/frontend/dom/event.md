@@ -428,6 +428,19 @@ Emitter.prototype.unbind = function(eventName, callback) {
     this._listener.hasOwnProperty(eventName) && delete this._listener[eventName];
     callback && callback();
 }
+
+
+var emitter = new Emitter();
+    emitter.bind("myevent", function(arg1, arg2) {
+        console.log(arg1, arg2);
+    });
+ 
+    emitter.bind("myevent", function(arg1, arg2) {
+        console.log(arg2, arg1);
+    });
+ 
+    emitter.trigger('myevent', "a", "b");
+
 ```
 
 
