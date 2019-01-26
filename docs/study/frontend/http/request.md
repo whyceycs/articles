@@ -24,7 +24,7 @@ request body(optional)
 
 ## Header字段详解
 
-### Cache相关部分
+### Cache相关
 
 ### If-Modified-Since
 
@@ -78,3 +78,125 @@ Pargma只有一个用法：Pragma: no-cache
 - must-revalidate：浏览器可能会用到，如果 max-age 过期，需要重新发送请求，获取这部分数据，再来验证数据是否真的过期，而不能直接使用本地缓存
 - proxy-revalidate：用在缓存服务器中，指定缓存服务器过期后，必须向源服务器重新请求，不能直接使用本地缓存
 - max-age
+
+
+
+### Client相关
+
+### Accept
+
+浏览器端可以接受的媒体类型
+
+- 例如text/html,如果服务器无法返回text/html类型的数据,服务器应该返回一个406错误(non acceptable)
+- 通配符 * 代表任意类型，例如  Accept: \*/\*  代表浏览器可以处理所有类型。(<span style='color:red'>一般浏览器发给服务器都是发这个</span>)
+
+### Accept-Encoding
+
+浏览器申明自己接收的编码方法，通常指定<span style='color:red'>压缩方法</span>
+
+例如： Accept-Encoding: gzip, deflate
+
+
+
+### Accept-Language
+
+浏览器申明自己接收的<span style='color:red'>语言</span>
+
+语言跟字符集的区别：中文是<span style='color:red'>语言</span>，~~中文有多种字符集，比如big5，gb2312，gbk等等~~；
+
+例如： Accept-Language: en-us
+
+
+
+### Accept-Charset
+
+浏览器申明自己接收的字符集
+
+如上述gb2312，utf-8，big5，gbk
+
+
+
+### User-Agent
+
+告诉HTTP服务器， 客户端使用的操作系统和浏览器的名称和版本
+
+例如： User-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; CIBA; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C; InfoPath.2; .NET4.0E)
+
+
+
+### Entity相关
+
+### Content-Length
+
+```
+只用于响应头或者POST请求的请求头，以字节为单位，每个字符都是一个字节
+```
+
+发送给HTTP服务器数据的长度
+
+Content-Length: 381
+
+
+
+### Content-Type
+
+```
+只用于响应头或者POST请求的请求头
+```
+
+Http Header里的Content-Type一般有这三种：
+
+- `application/x-www-form-urlencoded`：数据被编码为名称/值对。这是标准的编码格式。
+  - 当action为get时候，浏览器用此编码方式把form数据转换成一个字串（name1=value1&name2=value2...），然后追加到url后面，用`?`分割。
+  - 当action为post时候，浏览器把form数据封装到http body中，然后发送到server。 如果没有`type=file`的控件，用默认的application/x-www-form-urlencoded就可以了。 但是如果有`type=file`的话，就要用到multipart/form-data了
+  - <span style='color:red'>这种方式用的比较多</span>
+- `multipart/form-data`： 数据被编码为一条消息，页上的每个控件对应消息中的一个部分。
+  - 当action为post且Content-Type类型是`multipart/form-data`，浏览器会把整个表单以控件为单位分割，并为每个部分加上Content-Disposition(form-data或者file),Content-Type(默认为text/plain),name(控件`name`)等信息，并加上分割符(boundary)。
+  - <span style='color:red'>一般上传文件才会使用这种方式</span>
+- `text/plain`： 数据以纯文本形式(text/json/xml/html)进行编码，其中不含任何控件或格式字符。postman软件里标的是RAW。
+  - <span style='color:red'>一般向服务端发送json数据会使用这种方式</span>
+
+
+
+### Miscellaneous相关
+
+### referer
+
+请求头，提供了Request的上下文信息的服务器，告诉服务器我是从哪个链接过来的
+
+`验证 HTTP Referer 字段是防御 CSRF 攻击的策略之一`
+
+
+
+### Transport相关
+
+### connection
+
+- Connection: keep-alive
+
+  当一个网页打开完成后，客户端和服务器之间用于传输HTTP数据的TCP连接不会关闭，如果客户端再次访问这个服务器上的网页，会继续使用这一条已经建立的连接
+
+- Connection: close
+
+  代表一个Request完成后，客户端和服务器之间用于传输HTTP数据的TCP连接会关闭， 当客户端再次发送Request，需要重新建立TCP连接
+
+
+
+### host
+
+发送请求时，该报头域是必需的
+
+请求报头域主要用于指定被请求资源的Internet主机和端口号，它通常从HTTP URL中提取出来的
+
+例如: 我们在浏览器中输入：http://www.guet.edu.cn/index.html
+
+浏览器发送的请求消息中，就会包含Host请求报头域，如下：
+
+Host：http://www.guet.edu.cn
+
+### Cookie相关
+
+### Cookie
+
+最重要的header, 将cookie的值发送给HTTP 服务器
+

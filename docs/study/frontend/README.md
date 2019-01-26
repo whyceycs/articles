@@ -9,6 +9,7 @@
 ### [3 BOM相关知识](study/frontend/bom.md)
 ### [4 HTTP相关知识](study/frontend/http/http.md)
 #### [4.1 Request](study/frontend/http/request.md)
+#### [4.2 Response](study/frontend/http/response.md)
 
 
 
