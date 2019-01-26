@@ -185,6 +185,7 @@ Content-Language： zh-CN
 
 <details>
 <summary>2.301和302</summary> 
+
 - 场景
   - 301比较常用的场景是使用域名跳转。
   - 302用作临时跳转，比如：未登陆的用户访问用户中心重定向到登录页面，访问404页面会重新定向到首页
@@ -199,3 +200,8 @@ Content-Language： zh-CN
   - 由于302重定向是临时的，客户端应当继续向原有地址发送以后的请求。只有在Cache-Control或Expires中进行了指定的情况下，这个响应才是可缓存的
 
 </details>
+
+
+
+
+
