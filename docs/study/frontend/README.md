@@ -10,6 +10,7 @@
 ### [4 HTTP相关知识](study/frontend/http/http.md)
 #### [4.1 Request](study/frontend/http/request.md)
 #### [4.2 Response](study/frontend/http/response.md)
+#### [4.3 Cache缓存](study/frontend/http/cache.md)
 
 
 
