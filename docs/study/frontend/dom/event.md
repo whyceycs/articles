@@ -356,7 +356,7 @@ CustomEvent可以给事件绑定数据，传入对象的属性会被绑定到eve
 </details>
 
 <details>
-<summary>10.labek相关的执行顺序</summary> 
+<summary>10.label相关的执行顺序</summary> 
 
 ```
 <label>Click me <input type="text"></label>

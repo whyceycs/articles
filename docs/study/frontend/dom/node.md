@@ -669,4 +669,10 @@ function reverseChildrens (parent){
 </details>
 
 
+<details>
+<summary>8.在什么时候你会使用document.write()?</summary> 
+
+大多数生成的广告代码依旧使用document.write()
+
+</details>
 

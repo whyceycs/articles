@@ -5,6 +5,8 @@
     * [DOM节点相关](study/frontend/dom/node.md)
     * [DOM事件相关](study/frontend/dom/event.md)
     * [BOM相关](study/frontend/bom.md)
+    * [HTTP相关](study/frontend/http/http.md)
+    	* [Request相关](study/frontend/http/request.md)
 * [技术栈](boilerplate/)
   * [前端](boilerplate/frontend/)
     * [CSS](boilerplate/frontend/css/)

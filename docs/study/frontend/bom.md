@@ -286,6 +286,7 @@ function move() {
 
 <details>
 <summary>1.链接标记target属性的_self、_top、_parent、_blank、main、left、top各有何用处?</summary> 
+
 target属性的_self、_top、_parent都是针对框架的。
 
 比如你写了这样一个网页page，网页page分成frame1、frame2，frame1又分成frame1-1、frame1-2，frame1-1又分成frame1-1-1，frame1-1-2。
@@ -323,6 +324,7 @@ window.open('http://www.runoob.com', '_blank');
 
 <details>
 <summary>3.实现每隔一秒钟弹出一个对话框，且此弹出过程持续5秒钟 </summary> 
+
 ```javascript
 var id= setInterval(function() {alert("Hello JavaScript");},1000) 
 setTimeout(function( ) {clearInterval(id) ; } , 5*1000)
@@ -330,4 +332,14 @@ setTimeout(function( ) {clearInterval(id) ; } , 5*1000)
 
 </details>
 
+<details>
+<summary>4.浏览器特性检测，特性推断和浏览器UA字符串嗅探的区别？</summary> 
+- 特性检测：为特定浏览器的特性进行测试，并仅当特性存在时即可应用特性。
+
+- User-Agent检测：最早的浏览器嗅探即用户代理检测，服务端（以及后来的客户端）根据UA字符串屏蔽某些特定的浏览器查看网站内容。
+
+- 特性推断：尝试使用多个特性但仅验证了其中之一。根据一个特性的存在推断另一个特性是否存在。问题是，推断是假设并非事实，而且可能导致可维护性的问题。
+
+
+</details>
 
