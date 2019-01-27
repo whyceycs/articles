@@ -62,7 +62,7 @@
 
 
 
-### **严格模式与混杂模式的语句解析不同点有哪些？**
+### 严格模式与混杂模式的语句解析不同点有哪些？
 
 1. 盒模型的高宽包含内边距padding和边框border 
 
@@ -277,6 +277,7 @@ css属性用法上，用opacity代替visiability。visiability会触发重绘，
 
 回流重绘的花销不小，如果每句JS操作都去回流重绘的话，浏览器可能就会受不了。所以很多浏览器都会优化这些操作，浏览器会维护1个队列，把所有会引起回流、重绘的操作放入这个队列，等队列中的操作到了一定的数量或者到了一定的时间间隔，浏览器就会flush队列，进行一个批处理。这样就会让多次的回流、重绘变成一次回流重绘。
 虽然有了浏览器的优化，但有时候一些代码可能会强制浏览器提前flush队列，这样浏览器的优化可能就起不到作用了。当你请求向浏览器请求一些style信息的时候，就会让浏览器flush队列，比如：
+
 1. offsetTop, offsetLeft, offsetWidth, offsetHeight
 2. scrollTop/Left/Width/Height
 3. clientTop/Left/Width/Height
