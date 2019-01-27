@@ -10,13 +10,6 @@
     	* [Response相关](study/frontend/http/response.md)
     	* [Cache缓存](study/frontend/http/cache.md)
     	* [Cookie](study/frontend/http/cookie.md)
-
-* [技术栈](boilerplate/)
-  * [前端](boilerplate/frontend/)
-    * [CSS](boilerplate/frontend/css/)
-      * [The 7-1 Pattern](boilerplate/frontend/css/71pattern.md) 
-      * [fswatch](boilerplate/frontend/css/fswatch.md) 
-  * [后端](boilerplate/backend/)
 * [第三方框架](otherapp/)
   * [docsify](otherapp/docsify.md)
 * 帮助
