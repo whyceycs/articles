@@ -95,20 +95,111 @@ TCP连接是双向传输的对等的模式，就是说双方都可以同时向�
 
 
 
+## http1.0 / http1.1 / https / spdy / http2.0
 
 
 
+### http1.0与http1.1的区别
+
+- 缓存：http1.1引入etag,if-none-match等机制控制缓存
+- range头域：http1.1在请求头引入range字段，请求资源的某一部分，返回206
+- 错误代码：新增24个错误代码如409，410
+- host头处理：1.0认为服务器对应单ip，所以不传host。1.1请求和响应都支持host，以应对单ip对应多虚拟主机
+- 长连接：http1.1支持长连接（PersistentConnection）和请求的流水线（Pipelining）处理，在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟，在HTTP1.1中默认开启Connection： keep-alive，一定程度上弥补了HTTP1.0每次请求都要创建连接的缺点。
+  - HTTP Pipelining其实是把多个HTTP请求放到一个TCP连接中一一发送，而在发送过程中<span style='color:red'>不需要等待服务器对前一个请求的响应</span>；只不过，客户端还是要按照发送请求的顺序来接收响应。
+  - Head of line blocking：线头阻塞。服务器是顺序处理请求的，如果前一个请求非常耗时，那么后续请求都会受到影响。
+  - 大部分桌面浏览器仍然会选择默认关闭HTTP pipelining这一功能。
+
+### http1.x的问题
+
+- 传输数据时，每次都要新建连接，增加延迟，移动端更明显
+- 传输内容都是明文的，不安全
+- header过大且不怎么变化，增加传输成本
+- keep-alive虽然能弥补多次创建连接的延迟，但是会给服务器带来性能压力。并且对于单个文件被不断请求的服务(例如图片存放网站)，keep-alive可能会极大的影响性能，因为它在<span style='color:red'>文件</span>被请求之后还保持了不必要的连接很长时间。
+
+### https
+
+为解决上述问题，https出现了。
+
+对于HTTPS降低访问速度，其实更需要关心的是服务器端的CPU压力，HTTPS中大量的密钥算法计算，会消耗大量的CPU资源，只有足够的优化，HTTPS 的机器成本才不会明显增加
 
 
 
+### http与https的区别
+
+- HTTPS协议需要到CA申请证书，一般免费证书很少，需要交费
+- HTTP协议运行在TCP之上，所有传输的内容都是明文，HTTPS运行在SSL/TLS之上，SSL/TLS运行在TCP之上，所有传输的内容都经过加密的
+- HTTP和HTTPS使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443
+- HTTPS可以有效的防止运营商劫持，解决了防劫持的一个大问题
+
+![httpshttp](https://whyceycs.github.io/articles/study/frontend/http/httpshttp.png)
 
 
-## TODO:
 
-- websocket
-- http2
-- https,http,http2以及它的原形spdy有什么区别，又分别有什么优点和不足，他们的建立连接分别又有着什么环节
-- 
+### spdy
 
+2012年google提出了SPDY的方案，大家才开始从正面看待和解决老版本HTTP协议本身的问题，SPDY可以说是综合了HTTPS和HTTP两者优点于一体的传输协议，主要解决：
+
+- **复用流**：SPDY允许在一个连接上无限制并发流。因为请求在一个通道上，TCP效率更高：更少的网络连接，发出更少更密集的数据包。
+
+- **请求优先级**：多路复用带来一个新的问题是，在连接共享的基础之上有可能会导致关键请求被阻塞。SPDY允许给每个request设置优先级，这样重要的请求就会优先得到响应。比如浏览器加载首页，首页的html内容应该优先展示，之后才是各种静态资源文件，脚本文件等加载，这样可以保证用户能第一时间看到网页内容。
+
+- **HTTP报头压缩**：SPDY压缩请求和响应HTTP报头，从而减少传输的数据包数量和字节数。
+
+- **服务器启动流**：
+
+  - Server push：SPDY通过X-Associated-Content头试验了服务器推送数据给客户端的选项。这个头告诉客户端服务器将在客户端请求资源之前，推送资源给它。对于初始页面下载（例如用户初次访问这个网站），这样能大大提升用户体验。
+  - Server hint：在服务器事先知道客户端需要的资源的情况下，服务器使用X-Subresources头<span style='color:red'>建议客户端请求</span>特殊的资源。但是，服务器仍然在发送内容前等待客户请求。通过窄带，这个选项能减少一个客户端发现它所需要的资源的数百毫秒，可能更适合于非初始页面加载。
+
+>  SPDY位于HTTP之下，TCP和SSL之上，这样可以轻松兼容老版本的HTTP协议(将HTTP1.x的内容封装成一种新的frame格式)，同时可以使用已有的SSL功能。
+
+
+
+### http2.0
+
+HTTP2.0可以说是SPDY的升级版（其实原本也是基于SPDY设计的），但是，HTTP2.0 跟 SPDY 仍有不同的地方，主要是以下两点：
+
+1. HTTP2.0 支持明文 HTTP 传输，而 SPDY 强制使用 HTTPS（SSL之上）。
+2. HTTP2.0 消息头的压缩算法采用 [HPACK](http://http2.github.io/http2-spec/compression.html)，而非 SPDY 采用的 [DEFLATE](http://zh.wikipedia.org/wiki/DEFLATE)
+
+  
+
+### http2.0新特性：
+
+- **新的二进制格式**（Binary Format），HTTP1.x的解析是基于文本。基于文本协议的格式解析存在天然缺陷，文本的表现形式有多样性，要做到健壮性考虑的场景必然很多，二进制则不同，只认0和1的组合。基于这种考虑HTTP2.0的协议解析决定采用二进制格式，实现方便且健壮。
+- **多路复用**（MultiPlexing），即连接共享，即每一个request都是用作连接共享机制的。一个request对应一个id，这样一个连接上可以有多个request，每个连接的request可以随机的混杂在一起，接收方可以根据request的 id将request再归属到各自不同的服务端请求里面。
+
+![multiplexing](https://whyceycs.github.io/articles/study/frontend/http/multiplexing.png)
+
+- **header压缩，**如上文中所言，对前面提到过HTTP1.x的header带有大量信息，而且每次都要重复发送，HTTP2.0使用encoder来减少需要传输的header大小，通讯双方各自cache一份header fields表，既避免了重复header的传输，又减小了需要传输的大小。
+- **服务端推送**（server push），同SPDY一样，HTTP2.0也具有server push功能。目前，有大多数网站已经启用HTTP2.0，例如[YouTuBe](https://www.youtube.com/)，等网站。
+
+
+
+## WebSocket
+
+- websocket是一种网络通信协议，是 HTML5 开始提供的一种<span style='color:red'>在单个 TCP 连接上进行全双工通讯</span>的协议。
+
+- WebSocket是不限于HTTP协议的，但是由于现存大量的HTTP基础设施，代理，过滤，身份认证等等，WebSocket<span style='color:red'>借用HTTP和HTTPS的端口</span>。
+- 由于使用HTTP的端口，因此TCP连接建立后的握手消息是基于HTTP的，由服务器判断这是一个HTTP协议，还是WebSocket协议。 WebSocket连接除了建立和关闭时的握手，数据传输和HTTP没丁点关系了。
+
+- WebSocket也有自己一套帧协议。
+
+### websocket、long poll、ajax轮询
+
+- ajax轮询：隔几秒就发送一次请求
+- long poll：阻塞型，没消息就一直不返回。有消息返回后，再次建立连接
+- websocket：主动推送给客户端
+
+### websocket、spdy
+
+SPDY和WebSocket的关系比较复杂。
+
+
+- SPDY想在不影响HTTP语义的情况下，替换HTTP底层传输的协议来加快页面加载时间。
+SPDY的解决办法就是设计了一个会话层协议--帧协议，解决多路复用，优先级等问题，然后在其上实现了HTTP的语义。
+
+- 补充关系，二者侧重点不同。SPDY更侧重于给Web页面的加载提速，而WebSocket更强调为Web应用提供一种双向的通讯机制以及API。
+- 竞争关系，二者解决的问题有交集，比如在服务器推送上SPDY和WebSocket都提供了方案。
 
 
